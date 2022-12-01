@@ -1,0 +1,14 @@
+.noResult > h3 {
+  font-size: 64px;
+  text-align: center;
+  line-height: 86.66px;
+}
+.noResult > p {
+  font-size: 20px;
+  text-align: center;
+  line-height: 30px;
+
+  width: 525px;
+  margin-top: 10px;
+  margin-inline: auto;
+}

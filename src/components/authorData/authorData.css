@@ -1,0 +1,17 @@
+.authorData {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-areas:
+    "PostAuthorImg postAuthorSection"
+    "PostAuthorImg postAuthorSection";
+  gap: 0px 16px;
+}
+.authorData > img {
+  max-width: 50px;
+  max-height: 50px;
+
+  grid-area: PostAuthorImg;
+}
+.authorData {
+  grid-area: postAuthorSection;
+}

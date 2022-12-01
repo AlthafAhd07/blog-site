@@ -1,0 +1,20 @@
+.BlogsContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 63px 30px;
+
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 1180px) {
+  .BlogsContainer {
+    margin-top: 27px;
+    justify-content: space-around;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .BlogsContainer {
+    gap: 72px;
+  }
+}

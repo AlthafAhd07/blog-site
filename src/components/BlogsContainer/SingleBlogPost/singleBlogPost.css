@@ -1,0 +1,43 @@
+.singleBlogPost {
+  width: 340px;
+  height: 506px;
+
+  position: relative;
+}
+
+@media only screen and (max-width: 750px) {
+  .singleBlogPost:not(:last-child):after {
+    content: "";
+
+    height: 2px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+
+    opacity: 0.7;
+
+    border-radius: 100px;
+
+    position: absolute;
+    bottom: -28px;
+  }
+}
+.singleBlogPost > img {
+  max-width: 340px;
+  max-height: 213px;
+
+  margin-bottom: 20px;
+
+  width: 100%;
+}
+
+.postData > h2 {
+  font-size: 24px;
+
+  margin-top: 11px;
+}
+
+.postData > p {
+  margin-block: 10px 20px;
+
+  color: hsla(0, 0%, 100%, 0.6);
+}

@@ -1,0 +1,41 @@
+.blog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 69px;
+}
+.blog > h1 {
+  font-size: 24px;
+  text-align: center;
+  line-height: 38px;
+
+  max-width: 525px;
+  margin-block: 11px 30px;
+}
+
+.blog > img {
+  width: 896px;
+  aspect-ratio: 3 / 2;
+
+  margin-block: 28px 69px;
+}
+
+@media only screen and (max-width: 400px) {
+  .blog > img {
+    margin-block: 28px 35px;
+  }
+}
+
+.blog > pre {
+  max-width: 708px;
+  font-size: 20px;
+  line-height: 32px;
+
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}

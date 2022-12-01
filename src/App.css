@@ -1,0 +1,29 @@
+.App {
+  min-height: 100%;
+  padding-inline: 180px;
+  padding-top: 50px;
+  padding-bottom: 200px;
+  background: linear-gradient(180deg, #374151 0%, #111827 100%);
+
+  overflow-x: hidden;
+
+  font-family: var(--ff-primary);
+}
+
+@media only screen and (max-width: 1200px) {
+  .App {
+    padding-inline: 50px;
+  }
+}
+
+@media only screen and (max-width: 930px) {
+  .App {
+    padding-inline: 20px;
+    padding-top: 20px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .App {
+    padding-inline: 13px;
+  }
+}

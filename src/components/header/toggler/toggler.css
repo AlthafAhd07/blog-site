@@ -1,0 +1,42 @@
+.toggler {
+  display: none;
+
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+
+  width: 24px;
+  height: 24px;
+  z-index: 100;
+}
+.toggler > div {
+  width: 23px;
+  height: 2px;
+  background-color: #868c95;
+
+  border-radius: 10000px;
+  transition: all 300ms ease-in-out;
+}
+
+.toggler[data-toggled="true"] > div:nth-child(1) {
+  transform: rotateZ(40deg);
+  transform-origin: left top;
+  width: 26px;
+}
+.toggler[data-toggled="true"] > div:nth-child(3) {
+  transform: rotateZ(-40deg);
+  transform-origin: left bottom;
+  width: 26px;
+}
+
+.toggler[data-toggled="true"] > div:nth-child(2) {
+  width: 0%;
+  opacity: 0;
+  transform-origin: left;
+}
+
+@media only screen and (max-width: 830px) {
+  .toggler {
+    display: flex;
+  }
+}

@@ -1,0 +1,16 @@
+.categoryAndDate {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #a8abb2;
+}
+.categoryAndDate > div {
+  width: 4px;
+  height: 4px;
+  background-color: #a8abb2;
+
+  font-size: 14px;
+
+  border-radius: 50%;
+}
