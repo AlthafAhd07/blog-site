@@ -8,6 +8,8 @@ import Search from "./pages/search";
 import Header from "./components/header";
 import Blog from "./pages/blog";
 import ByCategory from "./pages/byCategory";
+import Login from "./pages/login";
+import Register from "./pages/register";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/blog/:id" element={<Blog />} />
         <Route path="/category/:name" element={<ByCategory />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

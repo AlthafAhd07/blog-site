@@ -10,6 +10,19 @@
   font-family: var(--ff-primary);
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #50546a;
+  border-radius: 5px;
+}
+
 @media only screen and (max-width: 1200px) {
   .App {
     padding-inline: 50px;
