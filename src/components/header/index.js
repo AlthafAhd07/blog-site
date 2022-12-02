@@ -55,17 +55,17 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to="/categories/ui" onClick={handleToggle}>
+            <Link to="/category/ui" onClick={handleToggle}>
               UI Design
             </Link>
           </li>
           <li>
-            <Link to="/categories/frontEnd" onClick={handleToggle}>
+            <Link to="/category/frontEnd" onClick={handleToggle}>
               Front-end
             </Link>
           </li>
           <li>
-            <Link to="/categories/backend" onClick={handleToggle}>
+            <Link to="/category/backend" onClick={handleToggle}>
               Back-end
             </Link>
           </li>

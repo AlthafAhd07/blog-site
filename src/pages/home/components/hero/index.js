@@ -3,7 +3,8 @@ import React from "react";
 import "./hero.css";
 
 import HeroImg from "../../../../assets/images/heroImg.png";
-import Author from "./author-3.png";
+
+import Author from "../hero/author-3.png";
 
 const Hero = () => {
   return (

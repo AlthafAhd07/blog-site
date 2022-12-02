@@ -15,3 +15,8 @@
 .authorData {
   grid-area: postAuthorSection;
 }
+
+.authorData > div:nth-child(3) {
+  font-size: 14px;
+  color: #a7abb1;
+}

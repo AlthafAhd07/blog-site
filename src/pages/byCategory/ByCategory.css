@@ -1,7 +1,13 @@
 .byCategory > h2 {
-  margin-block: 100px;
+  margin-block: 85px;
 
   font-size: 34px;
   line-height: 28px;
   text-align: center;
+}
+
+@media only screen and (max-width: 830px) {
+  .byCategory > h2 {
+    margin-block: 40px;
+  }
 }

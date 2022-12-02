@@ -6,11 +6,11 @@ import Author from "./author-3.png";
 
 const AuthorData = () => {
   return (
-    <div className="authorData">
+    <section className="authorData">
       <img src={Author} alt="" />
-      <span>Jenny Wilson</span>
-      <span>Product Designer</span>
-    </div>
+      <div className="authorName">Jenny Wilson</div>
+      <div className="authorProffesion">Product Designer</div>
+    </section>
   );
 };
 

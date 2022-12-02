@@ -65,3 +65,6 @@
 .hero__authorData {
   grid-area: postAuthorSection;
 }
+.hero__authorData > span:nth-child(3) {
+  color: #a7abb1;
+}

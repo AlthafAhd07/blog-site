@@ -1,0 +1,124 @@
+.user {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.user__top {
+  display: flex;
+}
+
+.user__data {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+
+  height: fit-content;
+
+  flex: 1;
+
+  background-color: rgba(94, 113, 146, 25%);
+  padding-bottom: 20px;
+
+  border-radius: 15px;
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.user__recentPost {
+  display: grid;
+  place-items: center;
+
+  flex: 1;
+}
+
+.user__data > h2 {
+  font-size: 36px;
+  margin-top: 5px;
+  margin-bottom: -5px;
+}
+
+.user__data > img {
+  width: 180px;
+  height: 180px;
+}
+
+.user__form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.user__form > label {
+  font-size: 1.1rem;
+}
+
+.user__form > input {
+  width: 270px;
+  height: 35px;
+  border-width: 0;
+  outline-width: 0;
+
+  text-indent: 10px;
+  font-size: 18px;
+
+  border-radius: 5px;
+}
+
+.user__form > button {
+  height: 45px;
+  margin-top: 15px;
+  background-color: rgb(49, 97, 241);
+  border-width: 0;
+  outline-width: 0;
+
+  border-radius: 8px;
+
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  box-shadow: rgba(49, 97, 241, 0.4) 0px 2px 8px 0px;
+}
+.user__recentPost > h2 {
+  margin-bottom: -20px;
+
+  position: relative;
+
+  font-size: 36px;
+}
+.user__recentPost > h2::after {
+  content: "";
+  width: 110%;
+  height: 2px;
+  background-color: rgb(109, 117, 132);
+
+  position: absolute;
+  left: -5%;
+  bottom: 5px;
+}
+
+.user__allPosts {
+  margin-top: 35px;
+}
+
+.user__allPosts > h2 {
+  position: relative;
+
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+.user__allPosts > h2::after {
+  content: "";
+  width: 150px;
+  height: 2px;
+  background-color: rgb(109, 117, 132);
+
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, -50%);
+}
