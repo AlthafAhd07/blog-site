@@ -26,6 +26,7 @@ import axios from "axios";
 
 import { login } from "./features/authSlice";
 import EditBlog from "./pages/editBlog";
+import Footer from "./components/footer";
 
 function App() {
   const { loading, toast } = useSelector(selectAlert);
@@ -48,6 +49,7 @@ function App() {
         <Route path="/category/:name" element={<ByCategory />} />
         <Route path="/search" element={<Search />} />
       </Routes>
+      <Footer />
       {loading && <Loading />}
       {showToast && <Toast />}
     </div>
