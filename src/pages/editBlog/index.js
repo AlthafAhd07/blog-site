@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { selectAuth } from "../../features/authSlice";
 import { selectBlogs } from "../../features/blogSlice";
 
@@ -20,9 +20,11 @@ const EditBlog = () => {
   const [tempImg, setTempImg] = useState();
 
   const { allBlogs, userBlogs } = useSelector(selectBlogs);
-  const { access_token } = useSelector(selectAuth);
+  const { user, access_token } = useSelector(selectAuth);
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const concated = allBlogs.concat(userBlogs);
@@ -30,11 +32,19 @@ const EditBlog = () => {
     const checkInLocal = concated.find((blog) => blog._id === id);
 
     if (checkInLocal) {
+      if (checkInLocal.author.userId !== user._id) {
+        navigate("/");
+        return;
+      }
       setBlog(checkInLocal);
     }
     async function getSingleBlog() {
       try {
         const res = await axios.get(`/api/specificBlog/${id}`);
+        if (res.data.author.userId !== user._id) {
+          navigate("/");
+          return;
+        }
         setBlog(res.data);
       } catch (error) {
         console.log(error);
