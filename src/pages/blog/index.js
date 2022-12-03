@@ -6,6 +6,7 @@ import CategoryAndDate from "../../components/CategoryAndDate";
 import AuthorData from "../../components/authorData";
 
 import Thumbnail from "./BlogMain.png";
+import Comments from "./comments";
 
 const Blog = () => {
   return (
@@ -18,6 +19,7 @@ const Blog = () => {
       <AuthorData />
       <img src={Thumbnail} alt="" />
       <pre>{abc}</pre>
+      <Comments />
     </div>
   );
 };

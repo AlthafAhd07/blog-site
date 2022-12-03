@@ -19,13 +19,13 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/blog/:id" element={<Blog />} />
-        <Route path="/category/:name" element={<ByCategory />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user/:id" element={<UserDashboard />} />
+        <Route path="/blog/:id" element={<Blog />} />
         <Route path="/blog/create" element={<CreateBlog />} />
+        <Route path="/category/:name" element={<ByCategory />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </div>
   );
