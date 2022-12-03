@@ -22,7 +22,6 @@ const blogSlice = createSlice({
       state.allBlogs.push(action.payload);
     },
     deleteSinglePost: (state, action) => {
-      console.log(action.payload);
       state.allBlogs = state.allBlogs.filter(
         (item) => item._id !== action.payload
       );

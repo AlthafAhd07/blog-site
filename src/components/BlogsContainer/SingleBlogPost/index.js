@@ -33,7 +33,6 @@ const SingleBlogPost = ({ data }) => {
           headers: { Authorization: access_token },
         }
       );
-      console.log(res);
       dispatch(
         showToast({ visible: true, type: "success", msg: "blog deleted!" })
       );

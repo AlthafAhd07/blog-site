@@ -19,8 +19,6 @@ const EditBlog = () => {
   const [blog, setBlog] = useState(initalaBlogState);
   const [tempImg, setTempImg] = useState();
 
-  console.log(blog);
-
   const { allBlogs, userBlogs } = useSelector(selectBlogs);
   const { access_token } = useSelector(selectAuth);
 

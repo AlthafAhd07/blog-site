@@ -62,9 +62,12 @@ export function useGetRefreshToken() {
   useEffect(() => {
     async function GetRefreshToken() {
       try {
-        const res = await axios.get("/api/user/refresh_token", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          "https://blogger-task-by-hotelshippo-backend.vercel.app/api/user/refresh_token",
+          {
+            withCredentials: true,
+          }
+        );
         dispatch(login(res.data));
       } catch (error) {
         console.log(error.response);
