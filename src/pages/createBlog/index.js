@@ -35,7 +35,9 @@ const CreateBlog = () => {
     if (!isValidBlog(blog)) return;
     if (!tempImg) return;
     if (!tempImg?.name?.match(/\.(jpg|jpeg|png)$/)) {
-      console.log("invalid image format");
+      dispatch(
+        showToast({ visible: true, type: "err", msg: "Invalid image format.." })
+      );
       return;
     }
     dispatch(changeLoadingState());

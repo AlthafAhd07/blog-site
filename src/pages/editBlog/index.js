@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { changeLoadingState, showToast } from "../../features/alertSlice";
 import { selectAuth } from "../../features/authSlice";
-import { selectBlogs } from "../../features/blogSlice";
+import { selectBlogs, updateSingleBlog } from "../../features/blogSlice";
 
 import Blog from "../blog/main/Blog";
 import { uploadImg } from "../createBlog";
@@ -25,6 +26,7 @@ const EditBlog = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const concated = allBlogs.concat(userBlogs);
@@ -63,12 +65,13 @@ const EditBlog = () => {
   }
   async function updateBlog(event) {
     event.preventDefault();
+    dispatch(changeLoadingState(true));
     let imageUrl;
     if (tempImg) {
       imageUrl = await uploadImg(tempImg);
     }
     try {
-      const res = await axios.put(
+      await axios.put(
         "/api/blog/update",
         {
           id,
@@ -81,8 +84,21 @@ const EditBlog = () => {
           },
         }
       );
-      console.log(res);
+
+      dispatch(
+        updateSingleBlog({
+          id,
+          ...blog,
+          thumbnail: imageUrl ? imageUrl : blog.thumbnail,
+        })
+      );
+      dispatch(
+        showToast({ visible: true, type: "success", msg: "blog Updated!" })
+      );
+      navigate("/");
+      dispatch(changeLoadingState(false));
     } catch (error) {
+      dispatch(changeLoadingState(false));
       console.log(error);
     }
   }

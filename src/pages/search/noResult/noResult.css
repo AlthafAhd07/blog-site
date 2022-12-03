@@ -1,3 +1,6 @@
+.noResult {
+  height: 500px;
+}
 .noResult > h3 {
   font-size: 64px;
   text-align: center;

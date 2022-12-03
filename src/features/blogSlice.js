@@ -26,6 +26,15 @@ const blogSlice = createSlice({
         (item) => item._id !== action.payload
       );
     },
+    updateSingleBlog: (state, action) => {
+      state.allBlogs = state.allBlogs.map((item) => {
+        if (item._id === action.payload.id) {
+          return { ...item, ...action.payload };
+        } else {
+          return item;
+        }
+      });
+    },
   },
 });
 
@@ -37,6 +46,7 @@ export const {
   updateSingleUserBlog,
   addNewBlog,
   deleteSinglePost,
+  updateSingleBlog,
 } = blogSlice.actions;
 
 export default blogSlice.reducer;
