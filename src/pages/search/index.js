@@ -1,11 +1,11 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+
 import "./search.css";
 
 import { useSearchParams } from "react-router-dom";
-
 import BlogsContainer from "../../components/BlogsContainer";
 import NoResult from "./noResult";
-import axios from "axios";
 
 const Search = () => {
   const search = useSearchParams();
@@ -27,7 +27,7 @@ const Search = () => {
   return (
     <div className="search">
       <h2>Search: {searchValue} </h2>
-      {/* <NoResult /> */}
+
       {blogs.length < 1 ? (
         !searching && <NoResult />
       ) : (

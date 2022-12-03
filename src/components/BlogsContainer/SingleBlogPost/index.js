@@ -1,8 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import axios from "axios";
 
 import "./singleBlogPost.css";
@@ -21,12 +19,11 @@ const SingleBlogPost = ({ data }) => {
   const { user, access_token } = useSelector(selectAuth);
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   async function handleFunctionDlt() {
     try {
-      const res = await axios.post(
+      await axios.post(
         "/api/blog/delete",
         { blogid: data._id },
         {
@@ -38,7 +35,13 @@ const SingleBlogPost = ({ data }) => {
       );
       dispatch(deleteSinglePost(data._id));
     } catch (error) {
-      console.log(error);
+      dispatch(
+        showToast({
+          visible: true,
+          type: "err",
+          msg: error.response.data.msg,
+        })
+      );
     }
   }
 
