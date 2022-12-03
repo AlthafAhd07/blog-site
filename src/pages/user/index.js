@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuth } from "../../features/authSlice";
 import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
 import { useNavigate } from "react-router-dom";
+import { showToast } from "../../features/alertSlice";
 
 const UserDashboard = () => {
   const { user, access_token } = useSelector(selectAuth);
@@ -32,6 +33,9 @@ const UserDashboard = () => {
       });
       navigate("/");
       dispatch(logout());
+      dispatch(
+        showToast({ visible: true, type: "success", msg: "Logged out.." })
+      );
     } catch (error) {
       console.log(error);
     }
