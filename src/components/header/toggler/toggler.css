@@ -19,18 +19,21 @@
 }
 
 .toggler[data-toggled="true"] > div:nth-child(1) {
+  width: 26px;
+
   transform: rotateZ(40deg);
   transform-origin: left top;
-  width: 26px;
 }
 .toggler[data-toggled="true"] > div:nth-child(3) {
+  width: 26px;
+
   transform: rotateZ(-40deg);
   transform-origin: left bottom;
-  width: 26px;
 }
 
 .toggler[data-toggled="true"] > div:nth-child(2) {
   width: 0%;
+
   opacity: 0;
   transform-origin: left;
 }

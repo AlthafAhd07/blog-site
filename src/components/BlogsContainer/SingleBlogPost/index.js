@@ -1,25 +1,62 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import axios from "axios";
 
 import "./singleBlogPost.css";
 
 import CategoryAndDate from "../../CategoryAndDate";
 import AuthorData from "../../authorData";
 
-import Thumbnail from "./thumnail.png";
+import { selectAuth } from "../../../features/authSlice";
+import { showToast } from "../../../features/alertSlice";
 
-const SingleBlogPost = ({ index }) => {
+import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
+import { ReactComponent as Delete } from "../../../assets/images/delete-icon.svg";
+import { deleteSinglePost } from "../../../features/blogSlice";
+
+const SingleBlogPost = ({ data }) => {
+  const { user, access_token } = useSelector(selectAuth);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  async function handleFunctionDlt() {
+    try {
+      const res = await axios.post(
+        "/api/blog/delete",
+        { blogid: data._id },
+        {
+          headers: { Authorization: access_token },
+        }
+      );
+      console.log(res);
+      dispatch(
+        showToast({ visible: true, type: "success", msg: "blog deleted!" })
+      );
+      dispatch(deleteSinglePost(data._id));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="singleBlogPost">
-      <img src={Thumbnail} alt="" />
+      {data?.author?.userId === user?._id && (
+        <div className="edit_controls">
+          <Edit onClick={() => navigate(`/edit/${data._id}`)} />
+          <Delete onClick={handleFunctionDlt} />
+        </div>
+      )}
+      <img src={data?.thumbnail} alt="" />
       <div className="postData">
-        <CategoryAndDate />
-        <h2>How to design a product that can grow itself 10x in year</h2>
-        <p>
-          Auctor Porta. Augue vitae diam mauris faucibus blandit elit per,
-          feugiat leo dui orci. Etiam vestibulum. Nostra netus per conubia
-          dolor.
-        </p>
-        <AuthorData />
+        <CategoryAndDate category={data?.category} date={data?.updatedAt} />
+        <h2 onClick={() => navigate(`/blog/${data._id}`)}>{data?.title}</h2>
+        <p>{data?.description}</p>
+        <AuthorData author={data?.author} />
       </div>
     </div>
   );

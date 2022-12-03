@@ -1,33 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import "./blog.css";
+import axios from "axios";
 
-import CategoryAndDate from "../../components/CategoryAndDate";
-import AuthorData from "../../components/authorData";
+import "./blogWrapper.css";
 
-import Thumbnail from "./BlogMain.png";
 import Comments from "./comments";
+import { selectBlogs } from "../../features/blogSlice";
+import Blog from "./main/Blog";
 
-const Blog = () => {
+const BlogWrapper = () => {
+  const { id } = useParams();
+
+  const [blog, setBlog] = useState();
+
+  const { allBlogs, userBlogs } = useSelector(selectBlogs);
+
+  const concated = allBlogs.concat(userBlogs);
+
+  useEffect(() => {
+    // here if the blog in all blogs , It will immediate show to the user and also it refetch in the background and set again ( comments may be changed ) [ performance + upto date data ]
+
+    const checkInLocal = concated.find((blog) => blog._id === id);
+
+    if (checkInLocal) {
+      setBlog(checkInLocal);
+    }
+    async function getSingleBlog() {
+      try {
+        const res = await axios.get(`/api/specificBlog/${id}`);
+        setBlog(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getSingleBlog();
+  }, []);
+
   return (
-    <div className="blog">
-      <CategoryAndDate />
-      <h1>
-        Understanding color theory: the color wheel and finding complementary
-        colors
-      </h1>
-      <AuthorData />
-      <img src={Thumbnail} alt="" />
-      <pre>{abc}</pre>
-      <Comments />
+    <div className="BlogWrapper">
+      <Blog blog={blog} />
+      <Comments
+        comments={blog?.comments}
+        blogId={blog?._id}
+        setBlog={setBlog}
+      />
     </div>
   );
 };
 
-export default Blog;
-
-const abc = `Male sixth sea it a. Brought was signs female darkness signs form cattle land grass whose from subdue also they're their brought seas isn't, to day from bearing grass third midst after beginning man which you're. Dry, gathering beginning given made them evening.
-
-Lights dry. Thing, likeness, forth shall replenish upon abundantly our green. Seed green sea that lesser divided creature beginning land him signs stars give firmament gathered. Wherein there their morning a he grass. Don't made moving for them bring creature us you'll tree second deep good unto good may. Us yielding.
-
-Have. Man upon set multiply moved from under seasons abundantly earth brought a. They're open moved years saw isn't morning darkness. Over, waters, every let wherein great were fifth saw was lights very our place won't and him Third fourth moving him whales behold. Beast second stars lights great was don't green give subdue his. Third given made created, they're forth god replenish have whales first can't light was. Herb you'll them beast kind divided. Were beginning fly air multiply god Yielding sea don't were forth.`;
+export default BlogWrapper;

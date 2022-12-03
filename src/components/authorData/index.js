@@ -2,14 +2,12 @@ import React from "react";
 
 import "./authorData.css";
 
-import Author from "./author-3.png";
-
-const AuthorData = () => {
+const AuthorData = ({ author }) => {
   return (
     <section className="authorData">
-      <img src={Author} alt="" />
-      <div className="authorName">Jenny Wilson</div>
-      <div className="authorProffesion">Product Designer</div>
+      <img src={author?.avatar} alt="" />
+      <div className="authorName">{author?.username}</div>
+      <div className="authorProffesion">{author?.profession}</div>
     </section>
   );
 };

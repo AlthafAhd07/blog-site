@@ -5,11 +5,11 @@
   justify-content: center;
   gap: 30px;
 
-  margin-top: 85px;
+  margin-top: 50px;
   overflow: hidden;
 }
 .login {
-  margin-top: 35px;
+  margin-top: 70px;
 }
 
 .auth__form > h2 {

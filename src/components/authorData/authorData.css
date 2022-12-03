@@ -5,6 +5,7 @@
     "PostAuthorImg postAuthorSection"
     "PostAuthorImg postAuthorSection";
   gap: 0px 16px;
+  text-transform: capitalize;
 }
 .authorData > img {
   max-width: 50px;
