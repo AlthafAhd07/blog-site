@@ -23,7 +23,6 @@ function TimeDiffFromNow(time) {
   let diff = (t2 - t1) / 1000;
   diff /= 60;
   diff = Math.abs(Math.round(diff));
-
   let final;
   if (diff < 60) {
     if (diff < 1) {
@@ -41,7 +40,7 @@ function TimeDiffFromNow(time) {
       final = `${hours} hours ago`;
     }
   } else {
-    const days = diff / 1440;
+    const days = Math.round(diff / 1440);
     if (days === 1) {
       final = "1 day ago";
     } else {

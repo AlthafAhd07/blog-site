@@ -16,6 +16,10 @@
 .hero__img {
   max-width: 710px;
   max-height: 389px;
+  width: 710px;
+  height: 389px;
+
+  border-radius: 10px;
 }
 
 .hero__postData > section {

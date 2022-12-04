@@ -13,7 +13,7 @@ import Blog from "./main/Blog";
 const BlogWrapper = () => {
   const { id } = useParams();
 
-  const [blog, setBlog] = useState();
+  const [blog, setBlog] = useState(null);
 
   const { allBlogs, userBlogs } = useSelector(selectBlogs);
 
@@ -42,11 +42,13 @@ const BlogWrapper = () => {
   return (
     <div className="BlogWrapper">
       <Blog blog={blog} />
-      <Comments
-        comments={blog?.comments}
-        blogId={blog?._id}
-        setBlog={setBlog}
-      />
+      {!!blog && (
+        <Comments
+          comments={blog?.comments}
+          blogId={blog?._id}
+          setBlog={setBlog}
+        />
+      )}
     </div>
   );
 };

@@ -12,7 +12,7 @@ import { showToast } from "../../../features/alertSlice";
 const Comments = ({ comments, blogId, setBlog }) => {
   const [newcomment, setNewComment] = useState("");
 
-  const { access_token } = useSelector(selectAuth);
+  const { access_token, user } = useSelector(selectAuth);
   const dispatch = useDispatch();
 
   async function handleCreateComment(event) {
@@ -29,6 +29,24 @@ const Comments = ({ comments, blogId, setBlog }) => {
     }
     if (newcomment.length < 1) return;
     try {
+      // here I am using this to just show the comment to the user instantly. These datas are not send to the backend only the comment will be sent to the backend
+      const newCmt = {
+        comment: newcomment,
+        commentOwner: {
+          id: user._id,
+          username: user.username,
+          profession: user.profession,
+          avatar: user.avatar,
+        },
+        id: Math.round(Math.random() * 100000),
+        createdAt: Date.now(),
+      };
+      setBlog((old) => ({
+        ...old,
+        comments: [newCmt, ...old.comments],
+      }));
+      setNewComment("");
+
       const res = await axios.post(
         "/api/blog/comment",
         { blogId, comment: newcomment },
@@ -38,11 +56,6 @@ const Comments = ({ comments, blogId, setBlog }) => {
           },
         }
       );
-      setBlog((old) => ({
-        ...old,
-        comments: [res.data.createdComment, ...old.comments],
-      }));
-      setNewComment("");
     } catch (error) {
       console.log(error);
     }

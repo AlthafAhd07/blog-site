@@ -162,7 +162,7 @@
   font-weight: 600;
   text-align: center;
 
-  /* margin-bottom: 70px; */
+  margin-bottom: 70px;
 }
 .user__allPosts > h2::after {
   content: "";

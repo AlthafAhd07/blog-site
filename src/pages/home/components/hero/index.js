@@ -9,7 +9,7 @@ import Author from "../hero/author-3.png";
 const Hero = () => {
   return (
     <div className="hero">
-      <img src={HeroImg} alt="" className="hero__img" />
+      <img src={HeroImg} alt="" className="hero__img skeleton" />
       <div className="hero__postData">
         <section>
           9 TO 5 <div></div> June 22, 2021
