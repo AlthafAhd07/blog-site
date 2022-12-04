@@ -12,15 +12,17 @@ const blogSlice = createSlice({
     setAllBlogs: (state, action) => {
       state.allBlogs = action.payload;
     },
+
     setUserBlogs: (state, action) => {
       state.userBlogs = action.payload;
     },
+
     updateSingleUserBlog: (state, action) => {
       state.userBlogs = action.payload;
     },
+
     addNewBlog: (state, action) => {
       state.allBlogs.unshift(action.payload);
-      console.log(action.payload);
     },
 
     deleteSinglePost: (state, action) => {

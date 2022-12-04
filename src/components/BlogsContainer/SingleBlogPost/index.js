@@ -5,19 +5,20 @@ import axios from "axios";
 
 import "./singleBlogPost.css";
 
-import CategoryAndDate from "../../CategoryAndDate";
-import AuthorData from "../../authorData";
-
 import { selectAuth } from "../../../features/authSlice";
 import {
   changeLoadingState,
   showErrMsg,
   showSuccessMsg,
 } from "../../../features/alertSlice";
+import { deleteSinglePost } from "../../../features/blogSlice";
 
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Delete } from "../../../assets/images/delete-icon.svg";
-import { deleteSinglePost } from "../../../features/blogSlice";
+
+import CategoryAndDate from "../../CategoryAndDate";
+import AuthorData from "../../authorData";
+
 import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
 
 const SingleBlogPost = ({ data }) => {
@@ -39,6 +40,7 @@ const SingleBlogPost = ({ data }) => {
           headers: { Authorization: token },
         }
       );
+
       dispatch(deleteSinglePost(data._id));
       dispatch(changeLoadingState(false));
       dispatch(showSuccessMsg("blog deleted!"));
@@ -55,6 +57,7 @@ const SingleBlogPost = ({ data }) => {
           <Delete onClick={handleFunctionDlt} />
         </div>
       )}
+
       {data?.thumbnail && (
         <img className="skeleton" src={data?.thumbnail} alt="" />
       )}

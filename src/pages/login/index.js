@@ -34,19 +34,23 @@ const Login = () => {
 
     try {
       dispatch(changeLoadingState(true));
+
       await axios.post("/api/user/login", { email, password });
+
+      localStorage.setItem("logged", true);
+
       dispatch(showSuccessMsg("Login Success!"));
 
       const res = await axios.get("/api/user/refresh_token", {
         withCredentials: true,
       });
 
-      dispatch(changeLoadingState());
-      navigate("/");
+      dispatch(changeLoadingState(false));
       dispatch(login(res.data));
+      navigate("/");
     } catch (error) {
       dispatch(showErrMsg(error.response.data.msg));
-      dispatch(changeLoadingState());
+      dispatch(changeLoadingState(false));
     }
   }
   return (

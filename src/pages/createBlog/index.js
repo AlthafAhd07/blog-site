@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -6,6 +6,7 @@ import axios from "axios";
 import "./createBlog.css";
 
 import Blog from "../blog/main/Blog";
+
 import { selectAuth } from "../../features/authSlice";
 import {
   changeLoadingState,
@@ -13,7 +14,7 @@ import {
   showSuccessMsg,
 } from "../../features/alertSlice";
 import { addNewBlog } from "../../features/blogSlice";
-import { useEffect } from "react";
+
 import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 
 const initalaBlogState = {
@@ -38,24 +39,21 @@ const CreateBlog = () => {
 
   async function createBlog(event) {
     event.preventDefault();
-    if (!isValidBlog(blog, dispatch)) return;
-    if (!tempImg) {
-      dispatch(showErrMsg("Please add an Image"));
-      return;
-    }
-    if (!tempImg?.name?.match(/\.(jpg|jpeg|png)$/)) {
-      dispatch(showErrMsg("Invalid image format.."));
-      return;
-    }
-    dispatch(changeLoadingState());
 
-    const imageUrl = await uploadImg(tempImg);
-    if (!imageUrl) {
-      dispatch(changeLoadingState());
-      return;
-    }
+    if (!isValidBlog(blog, dispatch)) return;
+    if (!isValidImage(tempImg, dispatch)) return;
 
     try {
+      dispatch(changeLoadingState(true));
+
+      const imageUrl = await uploadImg(tempImg);
+
+      if (!imageUrl) {
+        dispatch(changeLoadingState(false));
+        dispatch(showErrMsg("An error occured in image upload..."));
+        return;
+      }
+
       const token = await CheckTokenEx(access_token, dispatch);
 
       const res = await axios.post(
@@ -70,8 +68,8 @@ const CreateBlog = () => {
       );
 
       dispatch(showSuccessMsg("Blog created Successfully!"));
-
       dispatch(changeLoadingState(false));
+
       dispatch(addNewBlog(res.data.newBlog));
       navigate("/");
     } catch (error) {
@@ -152,6 +150,19 @@ function isValidBlog({ title, description, category }, dispatch) {
   }
   if (description.length < 20) {
     dispatch(showErrMsg("blog should contain atleast 20 chars"));
+    return false;
+  }
+  return true;
+}
+
+function isValidImage(tempImg, dispatch) {
+  if (!tempImg) {
+    dispatch(showErrMsg("Please add an Image"));
+    return false;
+  }
+
+  if (!tempImg?.name?.match(/\.(jpg|jpeg|png)$/)) {
+    dispatch(showErrMsg("Invalid image format.."));
     return false;
   }
   return true;

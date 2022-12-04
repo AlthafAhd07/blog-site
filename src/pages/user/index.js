@@ -1,85 +1,51 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import "./UserDashBoard.css";
 
-import SingleBlogPost from "../../components/BlogsContainer/SingleBlogPost";
+import { selectAuth } from "../../features/authSlice";
+import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
+import { showErrMsg } from "../../features/alertSlice";
+
 import BlogsContainer from "../../components/BlogsContainer";
-import Owner from "./owner";
+
+import UserTop from "./userTop.js";
 import Visitor from "./visitor";
 
-import { useDispatch, useSelector } from "react-redux";
-
-import { logout, selectAuth } from "../../features/authSlice";
-import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
-import { useNavigate } from "react-router-dom";
-import { changeLoadingState, showSuccessMsg } from "../../features/alertSlice";
-import SinglePostSkeleton from "../../components/skeleton/SinglePostSkeleton";
-import { CheckTokenEx } from "../../utils/checkTokenExpiration";
-
 const UserDashboard = () => {
-  const { user, access_token } = useSelector(selectAuth);
-  const { userBlogs } = useSelector(selectBlogs);
-  const [loadingBlogs, setLoadingBlogs] = useState(false);
+  // blogs related to this user id , it can be the current user or any other user
+  const [profileBlogs, setProfileBlogs] = useState(null);
+  const [loadingBlogs, setLoadingBlogs] = useState(true);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { user } = useSelector(selectAuth);
 
-  useGetUserBlogs(user, userBlogs, setLoadingBlogs);
+  const { id } = useParams();
 
-  async function handleLogOut() {
-    try {
-      const token = await CheckTokenEx(access_token, dispatch);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-      dispatch(changeLoadingState(true));
-      await axios.get("/api/user/logout", {
-        headers: {
-          Authorization: token,
-        },
-      });
-      navigate("/");
-      dispatch(logout());
-      dispatch(showSuccessMsg("Logged out.."));
-      dispatch(changeLoadingState(false));
-    } catch (error) {
-      dispatch(changeLoadingState(false));
-      console.log(error);
-    }
-  }
+  useGetUserBlogs(id, user, setLoadingBlogs, setProfileBlogs);
 
   return (
     <div className="user">
-      <div className="user__top">
-        <Owner user={user} access_token={access_token} />
-        {/* <Visitor /> */}
-        <div className="user__recentPost">
-          <button
-            className="createPost__button"
-            onClick={() => navigate("/createBlog")}
-          >
-            Create Post
-          </button>
-          <button
-            className="createPost__button logout__button "
-            onClick={handleLogOut}
-          >
-            Log out
-          </button>
-          <h2>Recent Post</h2>
-          {loadingBlogs && <SinglePostSkeleton />}
-          {!loadingBlogs && userBlogs?.length < 1 && <h3>No recent Posts..</h3>}
-          {!loadingBlogs && !!userBlogs?.length && (
-            <SingleBlogPost data={userBlogs?.[0]} />
-          )}
-        </div>
-      </div>
+      {id === user?._id ? (
+        <UserTop
+          loadingBlogs={loadingBlogs}
+          recentBlog={profileBlogs?.[0] || null}
+        />
+      ) : (
+        <Visitor data={profileBlogs?.[0].author || {}} />
+      )}
+
       <div className="user__allPosts">
         <h2>All Posts</h2>
-        {!loadingBlogs && userBlogs?.length < 1 && (
+        {!loadingBlogs && profileBlogs?.length < 1 && (
           <h3>You are not created a post yet...</h3>
         )}
-
-        <BlogsContainer Blogs={userBlogs} />
+        <BlogsContainer Blogs={profileBlogs} />
       </div>
     </div>
   );
@@ -87,25 +53,34 @@ const UserDashboard = () => {
 
 export default UserDashboard;
 
-function useGetUserBlogs(user, userBlogs, setLoadingBlogs) {
+function useGetUserBlogs(id, user, setLoadingBlogs, setProfileBlogs) {
+  const { userBlogs } = useSelector(selectBlogs);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!!!userBlogs?.length) {
-      setLoadingBlogs(true);
+    if (user?._id === id) {
+      if (!!userBlogs) {
+        setLoadingBlogs(false);
+        setProfileBlogs(userBlogs);
+      }
     }
 
     async function getUserBlogs() {
       try {
-        const res = await axios.get(`/api/AllUserBlogs/${user._id}`);
-        dispatch(setUserBlogs(res.data));
+        const res = await axios.get(`/api/AllUserBlogs/${id}`);
+        setProfileBlogs(res.data);
+
+        if (user?._id === id) {
+          dispatch(setUserBlogs(res.data));
+        }
 
         setLoadingBlogs(false);
       } catch (error) {
         setLoadingBlogs(false);
-        console.log(error);
+        dispatch(showErrMsg(error.response.data.msg));
       }
     }
     getUserBlogs();
-  }, [user]);
+  }, [id, user._id]);
 }

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 import "../login/auth.css";
-import { useDispatch, useSelector } from "react-redux";
+
 import {
   changeLoadingState,
   showErrMsg,
@@ -42,21 +43,24 @@ const Register = () => {
     if (!isValid(userData, dispatch)) return;
 
     try {
-      dispatch(changeLoadingState());
+      dispatch(changeLoadingState(true));
+
       await axios.post("/api/user/register", userData);
+
       dispatch(showSuccessMsg("Account Created!"));
 
       navigate("/");
 
+      localStorage.setItem("logged", true);
+
       const res = await axios.get("/api/user/refresh_token", {
         withCredentials: true,
       });
+      dispatch(changeLoadingState(false));
       dispatch(login(res.data));
-
-      dispatch(changeLoadingState(false));
     } catch (error) {
-      dispatch(showErrMsg(error.response.data.msg));
       dispatch(changeLoadingState(false));
+      dispatch(showErrMsg(error.response.data.msg));
     }
   }
 

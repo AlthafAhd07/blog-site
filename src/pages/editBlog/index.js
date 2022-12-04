@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+
+import "../createBlog/createBlog.css";
+
 import {
   changeLoadingState,
   showErrMsg,
@@ -9,12 +12,11 @@ import {
 } from "../../features/alertSlice";
 import { selectAuth } from "../../features/authSlice";
 import { selectBlogs, updateSingleBlog } from "../../features/blogSlice";
-import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 
-import Blog from "../blog/main/Blog";
+import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 import { uploadImg } from "../createBlog";
 
-import "../createBlog/createBlog.css";
+import Blog from "../blog/main/Blog";
 
 const initalaBlogState = {
   title: "",
@@ -22,45 +24,19 @@ const initalaBlogState = {
   thumbnail: "",
   category: "Front-end",
 };
+
 const EditBlog = () => {
   const [blog, setBlog] = useState(initalaBlogState);
   const [tempImg, setTempImg] = useState();
 
-  const { allBlogs, userBlogs } = useSelector(selectBlogs);
-  const { user, access_token } = useSelector(selectAuth);
+  const { access_token } = useSelector(selectAuth);
 
   const { id } = useParams();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const concated = allBlogs.concat(userBlogs);
-
-    const checkInLocal = concated.find((blog) => blog._id === id);
-
-    if (checkInLocal) {
-      if (checkInLocal.author.userId !== user._id) {
-        navigate("/");
-        return;
-      }
-      setBlog(checkInLocal);
-    }
-    async function getSingleBlog() {
-      try {
-        const res = await axios.get(`/api/specificBlog/${id}`);
-        if (res.data.author.userId !== user._id) {
-          navigate("/");
-          return;
-        }
-        setBlog(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getSingleBlog();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  useGetBlog(id, setBlog);
 
   useEffect(() => {
     if (!tempImg) return;
@@ -70,15 +46,20 @@ const EditBlog = () => {
   function HandleUpdateBlogInput({ target }) {
     setBlog((old) => ({ ...old, [target.name]: target.value }));
   }
+
   async function updateBlog(event) {
     event.preventDefault();
+
     dispatch(changeLoadingState(true));
-    let imageUrl;
-    if (tempImg) {
-      imageUrl = await uploadImg(tempImg);
-    }
+
     try {
+      let imageUrl;
+      if (tempImg) {
+        imageUrl = await uploadImg(tempImg);
+      }
+
       const token = await CheckTokenEx(access_token, dispatch);
+
       await axios.put(
         "/api/blog/update",
         {
@@ -100,9 +81,10 @@ const EditBlog = () => {
           thumbnail: imageUrl ? imageUrl : blog.thumbnail,
         })
       );
+
       dispatch(showSuccessMsg("blog Updated!"));
-      navigate("/");
       dispatch(changeLoadingState(false));
+      navigate("/");
     } catch (error) {
       dispatch(changeLoadingState(false));
       dispatch(showErrMsg(error.response.data.msg));
@@ -158,3 +140,45 @@ const EditBlog = () => {
 };
 
 export default EditBlog;
+
+function useGetBlog(id, setBlog) {
+  const { allBlogs, userBlogs } = useSelector(selectBlogs);
+  const { user } = useSelector(selectAuth);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let concated = [];
+
+    if (allBlogs) {
+      concated = allBlogs.concat(userBlogs);
+    }
+
+    const checkInLocal = concated.find((blog) => blog._id === id);
+
+    if (checkInLocal) {
+      if (checkInLocal.author.userId !== user._id) {
+        navigate("/");
+        dispatch(showErrMsg("Invalid Authentication"));
+        return;
+      }
+
+      setBlog(checkInLocal);
+    }
+    async function getSingleBlog() {
+      try {
+        const res = await axios.get(`/api/specificBlog/${id}`);
+        if (res.data.author.userId !== user._id) {
+          navigate("/");
+          return;
+        }
+        setBlog(res.data);
+      } catch (error) {
+        dispatch(showErrMsg(error.response.data.msg));
+      }
+    }
+    getSingleBlog();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+}

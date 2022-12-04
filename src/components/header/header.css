@@ -5,7 +5,7 @@
 
   position: relative;
 
-  z-index: 100000;
+  z-index: 10;
 
   transition: all 200ms ease-in-out;
   transition-delay: 100ms;

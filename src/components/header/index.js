@@ -11,11 +11,11 @@ import { useSelector } from "react-redux";
 
 import "./header.css";
 
-import Toggler from "./toggler";
+import { selectAuth } from "../../features/authSlice";
 
 import { ReactComponent as SearchIcon } from "../../assets/images/search-icon.svg";
 
-import { selectAuth } from "../../features/authSlice";
+import Toggler from "./toggler";
 
 const Header = () => {
   const [toggled, setToggled] = useState(false);

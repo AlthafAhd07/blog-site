@@ -8,6 +8,7 @@ import SingelComment from "./SingelComment";
 
 import { selectAuth } from "../../../features/authSlice";
 import { showErrMsg } from "../../../features/alertSlice";
+
 import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
 
 const Comments = ({ comments, blogId, setBlog }) => {
@@ -18,11 +19,14 @@ const Comments = ({ comments, blogId, setBlog }) => {
 
   async function handleCreateComment(event) {
     event.preventDefault();
+
     if (!access_token) {
       dispatch(showErrMsg("Please login to add comments."));
       return;
     }
+
     if (newcomment.length < 1) return;
+
     try {
       // here I am using this to just show the comment to the user instantly. These datas are not send to the backend only the comment will be sent to the backend
       const newCmt = {
@@ -55,7 +59,6 @@ const Comments = ({ comments, blogId, setBlog }) => {
       );
     } catch (error) {
       dispatch(showErrMsg(error.response.data.msg));
-      console.log(error);
     }
   }
   return (

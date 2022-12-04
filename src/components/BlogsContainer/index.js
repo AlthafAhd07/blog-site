@@ -11,6 +11,7 @@ const BlogsContainer = ({ Blogs }) => {
   });
 
   const skeletonBlogs = sketonCount.map((c) => {
+    // I am giving the count as a key here. because i won't change.
     return <SinglePostSkeleton key={c} />;
   });
 

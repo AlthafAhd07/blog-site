@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -12,13 +12,18 @@ import { updateUserData } from "../../../features/authSlice";
 import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
 
 const Owner = ({ user, access_token }) => {
-  const [username, setUserName] = useState(null);
-  const [profession, setProfession] = useState(null);
+  const [username, setUserName] = useState(user.username);
+  const [profession, setProfession] = useState(user.profession);
   const [oldPassword, setOldPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const [confirmPassword, setconfirmPassword] = useState(null);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setUserName(user.username);
+    setProfession(user.profession);
+  }, [user]);
 
   async function HandleUpdate(e) {
     e.preventDefault();
@@ -35,17 +40,18 @@ const Owner = ({ user, access_token }) => {
       return;
 
     try {
+      dispatch(changeLoadingState(true));
+
       const token = await CheckTokenEx(access_token, dispatch);
 
-      dispatch(changeLoadingState(true));
-      const res = await axios.put(
+      await axios.put(
         "/api/user/updateProfile",
         { username, profession, oldPassword, newPassword, confirmPassword },
         {
           headers: { Authorization: token },
         }
       );
-      console.log(res);
+
       dispatch(
         updateUserData({
           username: username ?? user.username,
@@ -72,7 +78,7 @@ const Owner = ({ user, access_token }) => {
         <input
           type="text"
           id="username"
-          value={username || user.username || ""}
+          value={username}
           onInput={({ target }) => {
             setUserName(target.value);
           }}
@@ -81,7 +87,7 @@ const Owner = ({ user, access_token }) => {
         <input
           type="text"
           id="profession"
-          value={profession || user.profession || ""}
+          value={profession}
           onInput={({ target }) => {
             setProfession(target.value);
           }}
@@ -138,7 +144,6 @@ function isValidInput(
   }
 
   if (!!newPassword || !!oldPassword || !!confirmPassword) {
-    console.log(newPassword);
     if (!!!newPassword) {
       displayError("Please enter you new password!");
       return false;

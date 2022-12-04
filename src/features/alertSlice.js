@@ -14,7 +14,7 @@ const alertSlice = createSlice({
   initialState,
   reducers: {
     changeLoadingState: (state, action) => {
-      state.loading = action.payload || !state.loading;
+      state.loading = action.payload;
     },
     showToast: (state, action) => {
       state.toast = { ...state.toast, ...action.payload };
