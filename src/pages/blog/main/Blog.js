@@ -8,7 +8,7 @@ import AuthorData from "../../../components/authorData";
 const Blog = ({ blog }) => {
   return (
     <div className="blog">
-      <CategoryAndDate category={blog?.category} date={blog?.updatedAt} />
+      <CategoryAndDate category={blog?.category} date={blog?.createdAt} />
       <h1>{blog?.title}</h1>
       <AuthorData author={blog?.author} />
       {blog?.thumbnail && (

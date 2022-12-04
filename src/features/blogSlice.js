@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  allBlogs: [],
-  userBlogs: [],
+  allBlogs: null,
+  userBlogs: null,
 };
 
 const blogSlice = createSlice({
@@ -19,13 +19,19 @@ const blogSlice = createSlice({
       state.userBlogs = action.payload;
     },
     addNewBlog: (state, action) => {
-      state.allBlogs.push(action.payload);
+      state.allBlogs.unshift(action.payload);
+      console.log(action.payload);
     },
+
     deleteSinglePost: (state, action) => {
       state.allBlogs = state.allBlogs.filter(
         (item) => item._id !== action.payload
       );
+      state.userBlogs = state.userBlogs.filter(
+        (item) => item._id !== action.payload
+      );
     },
+
     updateSingleBlog: (state, action) => {
       state.allBlogs = state.allBlogs.map((item) => {
         if (item._id === action.payload.id) {

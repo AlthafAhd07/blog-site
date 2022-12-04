@@ -2,7 +2,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { changeLoadingState, showToast } from "../../../features/alertSlice";
+import {
+  changeLoadingState,
+  showErrMsg,
+  showSuccessMsg,
+} from "../../../features/alertSlice";
 
 import { updateUserDate } from "../../../features/authSlice";
 
@@ -45,14 +49,10 @@ const Owner = ({ user, access_token }) => {
         })
       );
       dispatch(changeLoadingState(false));
-      dispatch(
-        showToast({ visible: true, type: "success", msg: "Profile updated!" })
-      );
+      dispatch(showSuccessMsg("Profile updated!"));
     } catch (error) {
       dispatch(changeLoadingState(false));
-      dispatch(
-        showToast({ visible: true, type: "err", msg: error.response?.data.msg })
-      );
+      dispatch(showErrMsg(error.response?.data.msg));
     }
   }
 
@@ -122,44 +122,38 @@ function isValidInput(
   newPassword,
   confirmPassword
 ) {
-  function showErrMsg(msg) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg,
-      })
-    );
+  function displayError(msg) {
+    dispatch(showErrMsg(msg));
   }
 
   if (
     !(username || profession || oldPassword || newPassword || confirmPassword)
   ) {
-    showErrMsg("Please fill atleast one field!");
+    displayError("Please fill atleast one field!");
     return false;
   }
 
   if (!!newPassword || !!oldPassword || !!confirmPassword) {
     console.log(newPassword);
     if (!!!newPassword) {
-      showErrMsg("Please enter you new password!");
+      displayError("Please enter you new password!");
       return false;
     }
     if (!!!oldPassword) {
-      showErrMsg("Please enter your old password!");
+      displayError("Please enter your old password!");
       return false;
     }
     if (!!!confirmPassword) {
-      showErrMsg("Please enter your new password again!");
+      displayError("Please enter your new password again!");
       return false;
     }
     if (newPassword?.length < 6) {
-      showErrMsg("password should contain atleast 6 chars");
+      displayError("password should contain atleast 6 chars");
       return false;
     }
 
     if (newPassword !== confirmPassword) {
-      showErrMsg("Confirm password does not match!");
+      displayError("Confirm password does not match!");
       return false;
     }
   }

@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuth } from "../../features/authSlice";
 import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
 import { useNavigate } from "react-router-dom";
-import { changeLoadingState, showToast } from "../../features/alertSlice";
+import { changeLoadingState, showSuccessMsg } from "../../features/alertSlice";
 import SinglePostSkeleton from "../../components/skeleton/SinglePostSkeleton";
 
 const UserDashboard = () => {
@@ -36,9 +36,7 @@ const UserDashboard = () => {
       });
       navigate("/");
       dispatch(logout());
-      dispatch(
-        showToast({ visible: true, type: "success", msg: "Logged out.." })
-      );
+      dispatch(showSuccessMsg("Logged out.."));
       dispatch(changeLoadingState(false));
     } catch (error) {
       dispatch(changeLoadingState(false));
@@ -66,15 +64,15 @@ const UserDashboard = () => {
           </button>
           <h2>Recent Post</h2>
           {loadingBlogs && <SinglePostSkeleton />}
-          {!loadingBlogs && userBlogs && userBlogs.length < 1 && (
-            <h3>No recent Posts..</h3>
+          {!loadingBlogs && userBlogs?.length < 1 && <h3>No recent Posts..</h3>}
+          {!loadingBlogs && !!userBlogs?.length && (
+            <SingleBlogPost data={userBlogs?.[0]} />
           )}
-          {!loadingBlogs && <SingleBlogPost data={userBlogs[0]} />}
         </div>
       </div>
       <div className="user__allPosts">
         <h2>All Posts</h2>
-        {!loadingBlogs && userBlogs.length < 1 && (
+        {!loadingBlogs && userBlogs?.length < 1 && (
           <h3>You are not created a post yet...</h3>
         )}
 
@@ -90,7 +88,7 @@ function useGetUserBlogs(user, userBlogs, setLoadingBlogs) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!!!userBlogs.length) {
+    if (!!!userBlogs?.length) {
       setLoadingBlogs(true);
     }
 
@@ -98,6 +96,7 @@ function useGetUserBlogs(user, userBlogs, setLoadingBlogs) {
       try {
         const res = await axios.get(`/api/AllUserBlogs/${user._id}`);
         dispatch(setUserBlogs(res.data));
+
         setLoadingBlogs(false);
       } catch (error) {
         setLoadingBlogs(false);

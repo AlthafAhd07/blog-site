@@ -9,7 +9,11 @@ import CategoryAndDate from "../../CategoryAndDate";
 import AuthorData from "../../authorData";
 
 import { selectAuth } from "../../../features/authSlice";
-import { showToast } from "../../../features/alertSlice";
+import {
+  changeLoadingState,
+  showErrMsg,
+  showSuccessMsg,
+} from "../../../features/alertSlice";
 
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Delete } from "../../../assets/images/delete-icon.svg";
@@ -23,6 +27,7 @@ const SingleBlogPost = ({ data }) => {
 
   async function handleFunctionDlt() {
     try {
+      dispatch(changeLoadingState(true));
       await axios.post(
         "/api/blog/delete",
         { blogid: data._id },
@@ -30,32 +35,28 @@ const SingleBlogPost = ({ data }) => {
           headers: { Authorization: access_token },
         }
       );
-      dispatch(
-        showToast({ visible: true, type: "success", msg: "blog deleted!" })
-      );
       dispatch(deleteSinglePost(data._id));
+      dispatch(changeLoadingState(false));
+      dispatch(showSuccessMsg("blog deleted!"));
     } catch (error) {
-      dispatch(
-        showToast({
-          visible: true,
-          type: "err",
-          msg: error.response.data.msg,
-        })
-      );
+      dispatch(showErrMsg(error.response.data.msg));
     }
   }
 
   return (
     <div className="singleBlogPost">
-      {data?.author?.userId === user?._id && (
+      {data && data?.author?.userId === user?._id && (
         <div className="edit_controls">
           <Edit onClick={() => navigate(`/edit/${data._id}`)} />
           <Delete onClick={handleFunctionDlt} />
         </div>
       )}
-      <img className="skeleton" src={data?.thumbnail} alt="" />
+      {data?.thumbnail && (
+        <img className="skeleton" src={data?.thumbnail} alt="" />
+      )}
+
       <div className="postData">
-        <CategoryAndDate category={data?.category} date={data?.updatedAt} />
+        <CategoryAndDate category={data?.category} date={data?.createdAt} />
         <h2 onClick={() => navigate(`/blog/${data._id}`)}>{data?.title}</h2>
         <p>{data?.description}</p>
         <AuthorData author={data?.author} />

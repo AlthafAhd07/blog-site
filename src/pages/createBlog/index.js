@@ -7,7 +7,11 @@ import "./createBlog.css";
 
 import Blog from "../blog/main/Blog";
 import { selectAuth } from "../../features/authSlice";
-import { changeLoadingState, showToast } from "../../features/alertSlice";
+import {
+  changeLoadingState,
+  showErrMsg,
+  showSuccessMsg,
+} from "../../features/alertSlice";
 import { addNewBlog } from "../../features/blogSlice";
 import { useEffect } from "react";
 
@@ -33,12 +37,13 @@ const CreateBlog = () => {
 
   async function createBlog(event) {
     event.preventDefault();
-    if (!isValidBlog(blog)) return;
-    if (!tempImg) return;
+    if (!isValidBlog(blog, dispatch)) return;
+    if (!tempImg) {
+      dispatch(showErrMsg("Please add an Image"));
+      return;
+    }
     if (!tempImg?.name?.match(/\.(jpg|jpeg|png)$/)) {
-      dispatch(
-        showToast({ visible: true, type: "err", msg: "Invalid image format.." })
-      );
+      dispatch(showErrMsg("Invalid image format.."));
       return;
     }
     dispatch(changeLoadingState());
@@ -61,22 +66,14 @@ const CreateBlog = () => {
         }
       );
 
-      dispatch(
-        showToast({
-          visible: true,
-          type: "success",
-          msg: "Blog created Successfully!",
-        })
-      );
+      dispatch(showSuccessMsg("Blog created Successfully!"));
+
       dispatch(changeLoadingState(false));
       dispatch(addNewBlog(res.data.newBlog));
       navigate("/");
     } catch (error) {
       dispatch(changeLoadingState(false));
-      dispatch(
-        showToast({ visible: true, type: "err", msg: error.responce.data.msg })
-      );
-      console.log(error);
+      dispatch(showErrMsg(error.response?.data?.msg));
     }
   }
 
@@ -130,7 +127,7 @@ const CreateBlog = () => {
               profession: user.profession,
             },
             thumbnail: tempImg ? URL.createObjectURL(tempImg) : "",
-            updatedAt: Date.now(),
+            createdAt: Date.now(),
           }}
         />
       </div>
@@ -140,11 +137,20 @@ const CreateBlog = () => {
 
 export default CreateBlog;
 
-function isValidBlog({ title, description, category }) {
-  if (!(!!title && !!description && !!category)) return false;
-  if (description.lenth < 20) return false;
-  if (description.lenth < 6) return false;
+function isValidBlog({ title, description, category }, dispatch) {
+  if (!(!!title && !!description && !!category)) {
+    dispatch(showErrMsg("Please fill all fields."));
+    return false;
+  }
+  if (title.length < 6) {
+    dispatch(showErrMsg("Title should contain atleast 6 chars"));
 
+    return false;
+  }
+  if (description.length < 20) {
+    dispatch(showErrMsg("blog should contain atleast 20 chars"));
+    return false;
+  }
   return true;
 }
 

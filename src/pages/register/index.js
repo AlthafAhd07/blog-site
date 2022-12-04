@@ -4,7 +4,11 @@ import axios from "axios";
 
 import "../login/auth.css";
 import { useDispatch, useSelector } from "react-redux";
-import { changeLoadingState, showToast } from "../../features/alertSlice";
+import {
+  changeLoadingState,
+  showErrMsg,
+  showSuccessMsg,
+} from "../../features/alertSlice";
 import { login, selectAuth } from "../../features/authSlice";
 
 const initalState = {
@@ -40,13 +44,7 @@ const Register = () => {
     try {
       dispatch(changeLoadingState());
       await axios.post("/api/user/register", userData);
-      dispatch(
-        showToast({
-          visible: true,
-          type: "success",
-          msg: "Account Created!",
-        })
-      );
+      dispatch(showSuccessMsg("Account Created!"));
 
       navigate("/");
 
@@ -55,16 +53,10 @@ const Register = () => {
       });
       dispatch(login(res.data));
 
-      dispatch(changeLoadingState());
+      dispatch(changeLoadingState(false));
     } catch (error) {
-      dispatch(
-        showToast({
-          visible: true,
-          type: "err",
-          msg: error.response.data.msg,
-        })
-      );
-      dispatch(changeLoadingState());
+      dispatch(showErrMsg(error.response.data.msg));
+      dispatch(changeLoadingState(false));
     }
   }
 
@@ -115,80 +107,52 @@ export default Register;
 
 function isValid(props, dispatch) {
   const { username, email, profession, password, confirm_password } = props;
+
+  if (!(username && email && profession && password && confirm_password)) {
+    dispatch(showErrMsg("Please fill all fields"));
+    return false;
+  }
   if (!username) {
-    dispatch(
-      showToast({ visible: true, type: "err", msg: "Please enter a username" })
-    );
-    // Please enter a username
+    dispatch(showErrMsg("Please enter a username"));
     return false;
   }
   if (username.length < 4) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Username should contain atleat 4 characters",
-      })
-    );
-    // Username should contain atleat 4 characters
+    dispatch(showErrMsg("Username should contain atleat 4 characters"));
     return false;
   }
+
   if (!email) {
-    dispatch(
-      showToast({ visible: true, type: "err", msg: "Please enter an email" })
-    );
-    // Please enter an email
+    dispatch(showErrMsg("Please enter an email"));
     return false;
   }
+
   if (!validateEmail(email)) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Please enter a valid e-mail",
-      })
-    );
-    // Please enter a valid e-mail
+    dispatch(showErrMsg("Please enter a valid e-mail"));
     return false;
   }
+
   if (!profession) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Please enter your current profession",
-      })
-    );
-    // Please enter your current profession
+    dispatch(showErrMsg("Please enter your current profession"));
     return false;
   }
+
   if (!password) {
-    dispatch(
-      showToast({ visible: true, type: "err", msg: "Please enter a password" })
-    );
-    // Please enter a password
+    dispatch(showErrMsg("Please enter a password"));
     return false;
   }
+
   if (password.length < 6) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Password should contain atleast 6 characters",
-      })
-    );
-    // Password should contain atleast 6 characters
+    dispatch(showErrMsg("Password should contain atleast 6 characters"));
     return false;
   }
+
+  if (!confirm_password) {
+    dispatch(showErrMsg("Please enter your password again"));
+    return false;
+  }
+
   if (password !== confirm_password) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Confirm password does not match",
-      })
-    );
-    // Confirm password does not match
+    dispatch(showErrMsg("Confirm password does not match"));
     return false;
   }
 

@@ -7,7 +7,7 @@ import "./comments.css";
 import SingelComment from "./SingelComment";
 
 import { selectAuth } from "../../../features/authSlice";
-import { showToast } from "../../../features/alertSlice";
+import { showErrMsg } from "../../../features/alertSlice";
 
 const Comments = ({ comments, blogId, setBlog }) => {
   const [newcomment, setNewComment] = useState("");
@@ -18,13 +18,7 @@ const Comments = ({ comments, blogId, setBlog }) => {
   async function handleCreateComment(event) {
     event.preventDefault();
     if (!access_token) {
-      dispatch(
-        showToast({
-          visible: true,
-          type: "err",
-          msg: "Please login to add comments.",
-        })
-      );
+      dispatch(showErrMsg("Please login to add comments."));
       return;
     }
     if (newcomment.length < 1) return;

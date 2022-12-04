@@ -15,9 +15,7 @@ const BlogsContainer = ({ Blogs }) => {
   });
 
   return (
-    <div className="BlogsContainer">
-      {!!Blogs.length ? allBlogs : skeletonBlogs}
-    </div>
+    <div className="BlogsContainer">{!!Blogs ? allBlogs : skeletonBlogs}</div>
   );
 };
 

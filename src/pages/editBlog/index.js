@@ -2,7 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { changeLoadingState, showToast } from "../../features/alertSlice";
+import {
+  changeLoadingState,
+  showErrMsg,
+  showSuccessMsg,
+} from "../../features/alertSlice";
 import { selectAuth } from "../../features/authSlice";
 import { selectBlogs, updateSingleBlog } from "../../features/blogSlice";
 
@@ -93,14 +97,12 @@ const EditBlog = () => {
           thumbnail: imageUrl ? imageUrl : blog.thumbnail,
         })
       );
-      dispatch(
-        showToast({ visible: true, type: "success", msg: "blog Updated!" })
-      );
+      dispatch(showSuccessMsg("blog Updated!"));
       navigate("/");
       dispatch(changeLoadingState(false));
     } catch (error) {
       dispatch(changeLoadingState(false));
-      console.log(error);
+      dispatch(showErrMsg(error.response.data.msg));
     }
   }
   return (

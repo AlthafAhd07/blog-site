@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { validateEmail } from "../register/index";
 
 import "./auth.css";
-import { changeLoadingState, showToast } from "../../features/alertSlice";
+import {
+  changeLoadingState,
+  showErrMsg,
+  showSuccessMsg,
+} from "../../features/alertSlice";
 import { login, selectAuth } from "../../features/authSlice";
 
 const Login = () => {
@@ -31,13 +35,7 @@ const Login = () => {
     try {
       dispatch(changeLoadingState());
       await axios.post("/api/user/login", { email, password });
-      dispatch(
-        showToast({
-          visible: true,
-          type: "success",
-          msg: "Login Success!",
-        })
-      );
+      dispatch(showSuccessMsg("Login Success!"));
       const res = await axios.get("/api/user/refresh_token", {
         withCredentials: true,
       });
@@ -45,15 +43,8 @@ const Login = () => {
       navigate("/");
       dispatch(login(res.data));
     } catch (error) {
-      dispatch(
-        showToast({
-          visible: true,
-          type: "err",
-          msg: error.response.data.msg,
-        })
-      );
+      dispatch(showErrMsg(error.response.data.msg));
       dispatch(changeLoadingState());
-      console.log(error.response);
     }
   }
   return (
@@ -90,32 +81,15 @@ export default Login;
 
 function isValid(email, password, dispatch) {
   if (!email) {
-    dispatch(
-      showToast({ visible: true, type: "err", msg: "Please enter your email" })
-    );
-    // Please enter your email
+    dispatch(showErrMsg("Please enter your email"));
     return false;
   }
   if (!validateEmail(email)) {
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Please enter a valid email",
-      })
-    );
-    // Please enter a valid email
+    dispatch(showErrMsg("Please enter a valid email"));
     return false;
   }
   if (!password) {
-    // Please enter your password
-    dispatch(
-      showToast({
-        visible: true,
-        type: "err",
-        msg: "Please enter your password",
-      })
-    );
+    showErrMsg("Please enter your password");
     return false;
   }
   return true;

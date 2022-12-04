@@ -26,6 +26,7 @@ const BlogWrapper = () => {
 
     if (checkInLocal) {
       setBlog(checkInLocal);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
     async function getSingleBlog() {
       try {

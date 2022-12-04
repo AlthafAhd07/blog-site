@@ -81,6 +81,7 @@
     z-index: 10000;
 
     border-radius: 10px;
+    transition: all 350ms ease-in;
   }
   .header:has(.header__navLinks[data-toggled="true"]) {
     margin-bottom: 280px;
@@ -242,6 +243,7 @@
     font-size: 1.4rem;
     font-weight: 500;
   }
+
   .header__loginLink::after {
     content: "";
     position: absolute;
