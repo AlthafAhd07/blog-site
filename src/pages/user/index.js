@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuth } from "../../features/authSlice";
 import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
 import { useNavigate } from "react-router-dom";
-import { showToast } from "../../features/alertSlice";
+import { changeLoadingState, showToast } from "../../features/alertSlice";
 
 const UserDashboard = () => {
   const { user, access_token } = useSelector(selectAuth);
@@ -26,6 +26,7 @@ const UserDashboard = () => {
 
   async function handleLogOut() {
     try {
+      dispatch(changeLoadingState(true));
       await axios.get("/api/user/logout", {
         headers: {
           Authorization: access_token,
@@ -36,7 +37,9 @@ const UserDashboard = () => {
       dispatch(
         showToast({ visible: true, type: "success", msg: "Logged out.." })
       );
+      dispatch(changeLoadingState(false));
     } catch (error) {
+      dispatch(changeLoadingState(false));
       console.log(error);
     }
   }

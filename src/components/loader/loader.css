@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000000000000;
@@ -17,10 +17,7 @@
   transition: all 300ms ease-in-out;
   animation: LoaderInAnim 300ms ease-in-out;
 }
-:has(.loading[data-loading="true"]) {
-  overflow: hidden;
-  overflow-y: overlay;
-}
+
 @keyframes LoaderInAnim {
   0% {
     scale: 0;
