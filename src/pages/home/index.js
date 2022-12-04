@@ -9,7 +9,7 @@ import { selectBlogs, setAllBlogs } from "../../features/blogSlice";
 const Home = () => {
   const { allBlogs } = useSelector(selectBlogs);
 
-  useSetAllBlogs();
+  useSetAllBlogs(allBlogs);
 
   return (
     <div className="home">
@@ -21,7 +21,7 @@ const Home = () => {
 
 export default Home;
 
-function useSetAllBlogs() {
+function useSetAllBlogs(allBlogs) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,9 @@ function useSetAllBlogs() {
         const res = await axios.get("/api/blog/all");
         dispatch(setAllBlogs(res.data));
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (!!!allBlogs.length) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       } catch (error) {
         console.log(error);
       }

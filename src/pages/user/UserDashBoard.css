@@ -53,12 +53,39 @@
   margin-top: 5px;
   margin-bottom: -5px;
 
+  height: 54px;
+
   text-transform: capitalize;
+}
+.user_name {
+  margin-top: 10px;
+  height: 40px;
+  width: 50%;
 }
 
 .user__data > img {
   width: 180px;
   height: 180px;
+
+  object-fit: contain;
+
+  border-radius: 50%;
+}
+.ProfileImg__skeleton {
+  width: 180px;
+  height: 180px;
+
+  border-radius: 50%;
+  animation: ProfileImgloading 1s linear infinite alternate;
+}
+
+@keyframes ProfileImgloading {
+  0% {
+    background-color: hsl(200, 20%, 70%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
 }
 
 .user__form {

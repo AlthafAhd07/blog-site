@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import "./UserDashBoard.css";
@@ -14,15 +14,17 @@ import { logout, selectAuth } from "../../features/authSlice";
 import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingState, showToast } from "../../features/alertSlice";
+import SinglePostSkeleton from "../../components/skeleton/SinglePostSkeleton";
 
 const UserDashboard = () => {
   const { user, access_token } = useSelector(selectAuth);
   const { userBlogs } = useSelector(selectBlogs);
+  const [loadingBlogs, setLoadingBlogs] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useGetUserBlogs(user);
+  useGetUserBlogs(user, userBlogs, setLoadingBlogs);
 
   async function handleLogOut() {
     try {
@@ -63,13 +65,18 @@ const UserDashboard = () => {
             Log out
           </button>
           <h2>Recent Post</h2>
-          {userBlogs.length < 1 && <h3>No recent Posts..</h3>}
-          <SingleBlogPost data={userBlogs[0]} />
+          {loadingBlogs && <SinglePostSkeleton />}
+          {!loadingBlogs && userBlogs && userBlogs.length < 1 && (
+            <h3>No recent Posts..</h3>
+          )}
+          {!loadingBlogs && <SingleBlogPost data={userBlogs[0]} />}
         </div>
       </div>
       <div className="user__allPosts">
         <h2>All Posts</h2>
-        {userBlogs.length < 1 && <h3>You are not created a post yet...</h3>}
+        {!loadingBlogs && userBlogs.length < 1 && (
+          <h3>You are not created a post yet...</h3>
+        )}
 
         <BlogsContainer Blogs={userBlogs} />
       </div>
@@ -79,14 +86,21 @@ const UserDashboard = () => {
 
 export default UserDashboard;
 
-function useGetUserBlogs(user) {
+function useGetUserBlogs(user, userBlogs, setLoadingBlogs) {
   const dispatch = useDispatch();
+
   useEffect(() => {
+    if (!!!userBlogs.length) {
+      setLoadingBlogs(true);
+    }
+
     async function getUserBlogs() {
       try {
         const res = await axios.get(`/api/AllUserBlogs/${user._id}`);
         dispatch(setUserBlogs(res.data));
+        setLoadingBlogs(false);
       } catch (error) {
+        setLoadingBlogs(false);
         console.log(error);
       }
     }

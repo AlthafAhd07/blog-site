@@ -1,0 +1,100 @@
+.skeleton {
+  animation: loading 1s linear infinite alternate;
+}
+
+@keyframes loading {
+  0% {
+    background-color: hsl(200, 20%, 70%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
+
+.skeleton-text {
+  width: 100%;
+  height: 1rem;
+  margin-bottom: 0.25rem;
+
+  border-radius: 0.25rem;
+}
+.skeleton-text:last-child {
+  width: 80%;
+}
+
+.post__skeleton {
+  width: 340px;
+  min-height: 506px;
+  margin-bottom: 20px;
+
+  position: relative;
+
+  border-radius: 15px;
+}
+
+.skeleton__ThumbanailImg {
+  max-width: 340px;
+  height: 213px;
+
+  margin-bottom: 20px;
+
+  border-radius: 15px;
+}
+.skeleton__date > div {
+  height: 0.8rem;
+  width: 40% !important;
+}
+
+.skeleton___heading {
+  margin-top: 11px;
+  font-size: 24px;
+}
+.skeleton___heading > div {
+  height: 1.5rem;
+}
+
+.skeleton__description {
+  margin-block: 10px 20px;
+}
+.skeleton__description > div:last-child {
+  width: 60%;
+}
+.skeleton__authorData {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+.skeleton__authorData > div {
+  min-width: 50px;
+  min-height: 50px;
+
+  border-radius: 50%;
+}
+.skeleton__authorData > section {
+  display: grid;
+  gap: 5px;
+}
+.skeleton__authorData > section > div {
+  width: 104px;
+  margin: 0;
+}
+.skeleton__authorData > section > div:last-child {
+  width: 130px;
+}
+
+@media only screen and (max-width: 750px) {
+  .post__skeleton:not(:last-child):after {
+    content: "";
+
+    height: 2px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+
+    position: absolute;
+    bottom: -28px;
+
+    opacity: 0.7;
+    border-radius: 100px;
+  }
+}

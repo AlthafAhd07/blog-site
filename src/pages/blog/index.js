@@ -31,6 +31,7 @@ const BlogWrapper = () => {
       try {
         const res = await axios.get(`/api/specificBlog/${id}`);
         setBlog(res.data);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.log(error);
       }

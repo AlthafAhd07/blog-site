@@ -53,7 +53,7 @@ const SingleBlogPost = ({ data }) => {
           <Delete onClick={handleFunctionDlt} />
         </div>
       )}
-      <img src={data?.thumbnail} alt="" />
+      <img className="skeleton" src={data?.thumbnail} alt="" />
       <div className="postData">
         <CategoryAndDate category={data?.category} date={data?.updatedAt} />
         <h2 onClick={() => navigate(`/blog/${data._id}`)}>{data?.title}</h2>

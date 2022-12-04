@@ -24,7 +24,8 @@ import Toast from "./components/toast";
 import Loading from "./components/loader";
 import axios from "axios";
 
-import { login } from "./features/authSlice";
+import { login, logout } from "./features/authSlice";
+
 import EditBlog from "./pages/editBlog";
 import Footer from "./components/footer";
 
@@ -64,14 +65,10 @@ export function useGetRefreshToken() {
   useEffect(() => {
     async function GetRefreshToken() {
       try {
-        const res = await axios.get(
-          "https://blogger-task-by-hotelshippo-backend.vercel.app/api/user/refresh_token",
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get("/api/user/refresh_token");
         dispatch(login(res.data));
       } catch (error) {
+        dispatch(logout());
         console.log(error.response);
       }
     }

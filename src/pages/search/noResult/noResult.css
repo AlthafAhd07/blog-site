@@ -1,5 +1,8 @@
 .noResult {
   height: 500px;
+  max-width: 525px;
+
+  margin-inline: auto;
 }
 .noResult > h3 {
   font-size: 64px;
@@ -11,7 +14,15 @@
   text-align: center;
   line-height: 30px;
 
-  width: 525px;
+  width: 100%;
   margin-top: 10px;
   margin-inline: auto;
+
+  text-overflow: clip;
+}
+
+@media only screen and (max-width: 550px) {
+  .noResult > h3 {
+    font-size: 48px;
+  }
 }
