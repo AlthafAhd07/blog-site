@@ -8,6 +8,7 @@ import SingelComment from "./SingelComment";
 
 import { selectAuth } from "../../../features/authSlice";
 import { showErrMsg } from "../../../features/alertSlice";
+import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
 
 const Comments = ({ comments, blogId, setBlog }) => {
   const [newcomment, setNewComment] = useState("");
@@ -41,16 +42,19 @@ const Comments = ({ comments, blogId, setBlog }) => {
       }));
       setNewComment("");
 
-      const res = await axios.post(
+      const token = await CheckTokenEx(access_token, dispatch);
+
+      await axios.post(
         "/api/blog/comment",
         { blogId, comment: newcomment },
         {
           headers: {
-            Authorization: access_token,
+            Authorization: token,
           },
         }
       );
     } catch (error) {
+      dispatch(showErrMsg(error.response.data.msg));
       console.log(error);
     }
   }

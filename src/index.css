@@ -1,13 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
 
 :root {
-  --clr-nuetral-800: hsl(0, 0%, 0%);
-  --clr-nuetral-700: hsl(220, 13%, 13%);
-  --clr-nuetral-600: hsl(219, 9%, 45%);
-  --clr-nuetral-400: hsl(220, 14%, 75%);
-  --clr-nuetral-200: hsl(223, 64%, 98%);
-  --clr-nuetral-100: hsl(0, 0%, 100%);
-
   --fs-200: 0.5rem;
   --fs-300: 0.75rem;
   --fs-400: 1rem;
@@ -29,7 +22,7 @@
   --ff-primary: "Patrick Hand", cursive;
 
   --fc-heading: var(--clr-nuetral-700);
-  --fc-body: var(--clr-nuetral-100);
+  --fc-body: hsl(0, 0%, 100%);
 }
 
 body {

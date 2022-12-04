@@ -17,10 +17,13 @@ const BlogWrapper = () => {
 
   const { allBlogs, userBlogs } = useSelector(selectBlogs);
 
-  const concated = allBlogs.concat(userBlogs);
-
   useEffect(() => {
     // here if the blog in all blogs , It will immediate show to the user and also it refetch in the background and set again ( comments may be changed ) [ performance + upto date data ]
+    let concated = [];
+
+    if (allBlogs) {
+      concated = allBlogs.concat(userBlogs);
+    }
 
     const checkInLocal = concated.find((blog) => blog._id === id);
 
@@ -32,7 +35,9 @@ const BlogWrapper = () => {
       try {
         const res = await axios.get(`/api/specificBlog/${id}`);
         setBlog(res.data);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (!!!blog) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       } catch (error) {
         console.log(error);
       }

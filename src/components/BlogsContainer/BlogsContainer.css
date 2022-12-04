@@ -4,6 +4,8 @@
   gap: 63px 30px;
 
   flex-wrap: wrap;
+
+  overflow: hidden;
 }
 
 @media only screen and (max-width: 1180px) {

@@ -15,6 +15,7 @@ import { selectBlogs, setUserBlogs } from "../../features/blogSlice";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingState, showSuccessMsg } from "../../features/alertSlice";
 import SinglePostSkeleton from "../../components/skeleton/SinglePostSkeleton";
+import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 
 const UserDashboard = () => {
   const { user, access_token } = useSelector(selectAuth);
@@ -28,10 +29,12 @@ const UserDashboard = () => {
 
   async function handleLogOut() {
     try {
+      const token = await CheckTokenEx(access_token, dispatch);
+
       dispatch(changeLoadingState(true));
       await axios.get("/api/user/logout", {
         headers: {
-          Authorization: access_token,
+          Authorization: token,
         },
       });
       navigate("/");

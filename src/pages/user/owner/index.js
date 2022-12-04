@@ -8,7 +8,8 @@ import {
   showSuccessMsg,
 } from "../../../features/alertSlice";
 
-import { updateUserDate } from "../../../features/authSlice";
+import { updateUserData } from "../../../features/authSlice";
+import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
 
 const Owner = ({ user, access_token }) => {
   const [username, setUserName] = useState(null);
@@ -32,18 +33,21 @@ const Owner = ({ user, access_token }) => {
       )
     )
       return;
+
     try {
+      const token = await CheckTokenEx(access_token, dispatch);
+
       dispatch(changeLoadingState(true));
       const res = await axios.put(
         "/api/user/updateProfile",
         { username, profession, oldPassword, newPassword, confirmPassword },
         {
-          headers: { Authorization: access_token },
+          headers: { Authorization: token },
         }
       );
       console.log(res);
       dispatch(
-        updateUserDate({
+        updateUserData({
           username: username ?? user.username,
           profession: profession ?? user.profession,
         })

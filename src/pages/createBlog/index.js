@@ -14,6 +14,7 @@ import {
 } from "../../features/alertSlice";
 import { addNewBlog } from "../../features/blogSlice";
 import { useEffect } from "react";
+import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 
 const initalaBlogState = {
   title: "",
@@ -55,6 +56,8 @@ const CreateBlog = () => {
     }
 
     try {
+      const token = await CheckTokenEx(access_token, dispatch);
+
       const res = await axios.post(
         "/api/blog/create",
         {
@@ -62,7 +65,7 @@ const CreateBlog = () => {
           thumbnail: imageUrl,
         },
         {
-          headers: { Authorization: access_token },
+          headers: { Authorization: token },
         }
       );
 

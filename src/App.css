@@ -4,8 +4,6 @@
   padding-top: 50px;
   background: linear-gradient(180deg, #374151 0%, #111827 100%);
 
-  overflow-x: hidden;
-
   font-family: var(--ff-primary);
 
   scroll-behavior: smooth;

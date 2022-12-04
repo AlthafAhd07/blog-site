@@ -33,12 +33,14 @@ const Login = () => {
     if (!isValid(email, password, dispatch)) return;
 
     try {
-      dispatch(changeLoadingState());
+      dispatch(changeLoadingState(true));
       await axios.post("/api/user/login", { email, password });
       dispatch(showSuccessMsg("Login Success!"));
+
       const res = await axios.get("/api/user/refresh_token", {
         withCredentials: true,
       });
+
       dispatch(changeLoadingState());
       navigate("/");
       dispatch(login(res.data));

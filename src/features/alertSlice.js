@@ -31,7 +31,7 @@ const alertSlice = createSlice({
       state.toast = {
         ...state.toast,
         visible: true,
-        type: "err",
+        type: "success",
         msg: action.payload,
       };
     },

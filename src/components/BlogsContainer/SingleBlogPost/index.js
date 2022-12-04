@@ -18,6 +18,7 @@ import {
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Delete } from "../../../assets/images/delete-icon.svg";
 import { deleteSinglePost } from "../../../features/blogSlice";
+import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
 
 const SingleBlogPost = ({ data }) => {
   const { user, access_token } = useSelector(selectAuth);
@@ -28,11 +29,14 @@ const SingleBlogPost = ({ data }) => {
   async function handleFunctionDlt() {
     try {
       dispatch(changeLoadingState(true));
+
+      const token = await CheckTokenEx(access_token, dispatch);
+
       await axios.post(
         "/api/blog/delete",
         { blogid: data._id },
         {
-          headers: { Authorization: access_token },
+          headers: { Authorization: token },
         }
       );
       dispatch(deleteSinglePost(data._id));

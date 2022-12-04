@@ -9,11 +9,13 @@ import {
 } from "../../features/alertSlice";
 import { selectAuth } from "../../features/authSlice";
 import { selectBlogs, updateSingleBlog } from "../../features/blogSlice";
+import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 
 import Blog from "../blog/main/Blog";
 import { uploadImg } from "../createBlog";
 
 import "../createBlog/createBlog.css";
+
 const initalaBlogState = {
   title: "",
   description: "",
@@ -76,6 +78,7 @@ const EditBlog = () => {
       imageUrl = await uploadImg(tempImg);
     }
     try {
+      const token = await CheckTokenEx(access_token, dispatch);
       await axios.put(
         "/api/blog/update",
         {
@@ -85,7 +88,7 @@ const EditBlog = () => {
         },
         {
           headers: {
-            Authorization: access_token,
+            Authorization: token,
           },
         }
       );
