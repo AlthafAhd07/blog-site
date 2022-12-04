@@ -1,6 +1,6 @@
 .singleBlogPost {
   width: 340px;
-  min-height: 506px;
+  max-height: 506px;
 
   position: relative;
 }

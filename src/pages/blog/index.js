@@ -14,7 +14,7 @@ import Blog from "./main/Blog";
 const BlogWrapper = () => {
   const [blog, setBlog] = useState(null);
 
-  useGetBlog(blog, setBlog);
+  useGetBlog(setBlog);
 
   return (
     <div className="BlogWrapper">
@@ -32,7 +32,7 @@ const BlogWrapper = () => {
 
 export default BlogWrapper;
 
-function useGetBlog(blog, setBlog) {
+function useGetBlog(setBlog) {
   const { id } = useParams();
 
   const { allBlogs, userBlogs } = useSelector(selectBlogs);
@@ -51,24 +51,22 @@ function useGetBlog(blog, setBlog) {
 
     if (checkInLocal) {
       setBlog(checkInLocal);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     async function getSingleBlog() {
       try {
-        dispatch(changeLoadingState(true));
+        if (!checkInLocal) {
+          dispatch(changeLoadingState(true));
+        }
         const res = await axios.get(`/api/specificBlog/${id}`);
         setBlog(res.data);
         dispatch(changeLoadingState(false));
-
-        if (!!!blog) {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
       } catch (error) {
         dispatch(changeLoadingState(false));
         dispatch(showErrMsg(error.response.data.msg));
       }
     }
     getSingleBlog();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 }

@@ -81,10 +81,14 @@ const Header = () => {
             </Link>
           </li>
           {!access_token && (
-            <li className="header__loginLink">
-              <Link to="/login" onClick={handleToggle}>
-                Login
-              </Link>
+            <li
+              className="header__loginLink"
+              onClick={() => {
+                navigate("/login");
+                handleToggle();
+              }}
+            >
+              <Link to="/login">Login</Link>
             </li>
           )}
         </ul>

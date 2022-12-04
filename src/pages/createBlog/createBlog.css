@@ -12,6 +12,19 @@
   margin-bottom: 30px;
 }
 
+.preview {
+  width: 95%;
+  margin-inline: auto;
+}
+.preview h1 {
+  width: 100%;
+
+  word-wrap: break-word;
+}
+.preview pre {
+  width: 100%;
+}
+
 .preview > h2 {
   position: relative;
 
@@ -41,6 +54,7 @@
 
   border-radius: 500px;
 }
+
 .createBlog__form {
   display: flex;
   flex-direction: column;

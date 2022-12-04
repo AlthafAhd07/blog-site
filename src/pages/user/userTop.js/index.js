@@ -54,7 +54,7 @@ const UserTop = ({ loadingBlogs, recentBlog }) => {
           className="createPost__button"
           onClick={() => navigate("/createBlog")}
         >
-          Create Post
+          Create Blog
         </button>
         <button
           className="createPost__button logout__button "

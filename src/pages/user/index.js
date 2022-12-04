@@ -82,5 +82,5 @@ function useGetUserBlogs(id, user, setLoadingBlogs, setProfileBlogs) {
       }
     }
     getUserBlogs();
-  }, [id, user._id]);
+  }, [id, user._id, userBlogs]);
 }
