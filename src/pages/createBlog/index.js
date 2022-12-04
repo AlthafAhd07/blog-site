@@ -9,6 +9,7 @@ import Blog from "../blog/main/Blog";
 import { selectAuth } from "../../features/authSlice";
 import { changeLoadingState, showToast } from "../../features/alertSlice";
 import { addNewBlog } from "../../features/blogSlice";
+import { useEffect } from "react";
 
 const initalaBlogState = {
   title: "",
@@ -78,6 +79,10 @@ const CreateBlog = () => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div className="createBlog">

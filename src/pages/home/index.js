@@ -29,6 +29,8 @@ function useSetAllBlogs() {
       try {
         const res = await axios.get("/api/blog/all");
         dispatch(setAllBlogs(res.data));
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.log(error);
       }

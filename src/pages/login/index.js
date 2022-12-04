@@ -31,7 +31,6 @@ const Login = () => {
     try {
       dispatch(changeLoadingState());
       await axios.post("/api/user/login", { email, password });
-      dispatch(changeLoadingState());
       dispatch(
         showToast({
           visible: true,
@@ -39,13 +38,12 @@ const Login = () => {
           msg: "Login Success!",
         })
       );
-
       const res = await axios.get("/api/user/refresh_token", {
         withCredentials: true,
       });
-      dispatch(login(res.data));
-
+      dispatch(changeLoadingState());
       navigate("/");
+      dispatch(login(res.data));
     } catch (error) {
       dispatch(
         showToast({
