@@ -6,6 +6,7 @@
   margin-block: 70px 100px;
 
   white-space: wrap;
+  word-wrap: break-word;
 
   font-size: 34px;
   text-align: center;
