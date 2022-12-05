@@ -38,7 +38,6 @@ const Search = () => {
     <div className="search">
       <h2>Search : {searchValue} </h2>
       {searching && <SearchLoader />}
-
       {blogs.length < 1 ? (
         !searching && <NoResult />
       ) : (

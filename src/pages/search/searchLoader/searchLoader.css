@@ -2,8 +2,28 @@
   display: grid;
   place-items: center;
 
-  margin-top: -90px;
-  margin-bottom: 10px;
+  scale: 0.7;
+
+  width: 40px;
+  height: 40px;
+  margin-inline: auto;
+  margin-top: -100px;
+  margin-bottom: 60px;
+}
+
+@media only screen and (max-width: 830px) {
+  .search__loader {
+    position: absolute;
+    right: 60px;
+    top: 161.5px;
+    z-index: 100;
+    scale: 0.4;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .search__loader {
+    right: 50px;
+  }
 }
 
 .lds-roller {
