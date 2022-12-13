@@ -10,10 +10,11 @@ const BlogsContainer = ({ Blogs }) => {
     return <SingleBlogPost key={blog._id} data={blog} />;
   });
 
-  const skeletonBlogs = sketonCount.map((c) => {
+  const skeletonBlogs = [...Array(8).keys()].map((c) => {
     // I am giving the count as a key here. because i won't change.
     return <SinglePostSkeleton key={c} />;
   });
+
 
   return (
     <div className="BlogsContainer">{!!Blogs ? allBlogs : skeletonBlogs}</div>
@@ -21,5 +22,3 @@ const BlogsContainer = ({ Blogs }) => {
 };
 
 export default BlogsContainer;
-
-const sketonCount = [1, 2, 3, 4, 5, 6];

@@ -59,7 +59,7 @@ const SingleBlogPost = ({ data }) => {
       )}
 
       {data?.thumbnail && (
-        <img className="skeleton" src={data?.thumbnail} alt="" />
+        <img className="skeleton" src={data?.thumbnail} alt="" onClick={() => navigate(`/blog/${data._id}`)}/>
       )}
 
       <div className="postData">

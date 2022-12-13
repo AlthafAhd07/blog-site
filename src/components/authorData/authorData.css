@@ -6,12 +6,16 @@
     "PostAuthorImg postAuthorSection";
   gap: 0px 16px;
   text-transform: capitalize;
+
+
 }
 .authorData > img {
   max-width: 50px;
   max-height: 50px;
 
   grid-area: PostAuthorImg;
+
+  cursor: pointer;
 }
 .authorData {
   grid-area: postAuthorSection;
@@ -20,4 +24,10 @@
 .authorData > div:nth-child(3) {
   font-size: 14px;
   color: #a7abb1;
+}
+
+.authorData > div{
+  width: fit-content;
+
+  cursor: pointer;
 }
