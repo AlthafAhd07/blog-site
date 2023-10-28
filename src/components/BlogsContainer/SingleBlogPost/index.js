@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 
 import "./singleBlogPost.css";
 
@@ -19,10 +18,10 @@ import { ReactComponent as Delete } from "../../../assets/images/delete-icon.svg
 import CategoryAndDate from "../../CategoryAndDate";
 import AuthorData from "../../authorData";
 
-import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
+import { deleteBlogApi } from "../../../api/blogApi";
 
 const SingleBlogPost = ({ data }) => {
-  const { user, access_token } = useSelector(selectAuth);
+  const { user } = useSelector(selectAuth);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,15 +30,7 @@ const SingleBlogPost = ({ data }) => {
     try {
       dispatch(changeLoadingState(true));
 
-      const token = await CheckTokenEx(access_token, dispatch);
-
-      await axios.post(
-        "/api/blog/delete",
-        { blogid: data._id },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await deleteBlogApi(data._id);
 
       dispatch(deleteSinglePost(data._id));
       dispatch(changeLoadingState(false));
@@ -59,7 +50,12 @@ const SingleBlogPost = ({ data }) => {
       )}
 
       {data?.thumbnail && (
-        <img className="skeleton" src={data?.thumbnail} alt="" onClick={() => navigate(`/blog/${data._id}`)}/>
+        <img
+          className="skeleton"
+          src={data?.thumbnail}
+          alt=""
+          onClick={() => navigate(`/blog/${data._id}`)}
+        />
       )}
 
       <div className="postData">

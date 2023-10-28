@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 
 import "./blogWrapper.css";
 
@@ -10,6 +9,8 @@ import { changeLoadingState, showErrMsg } from "../../features/alertSlice";
 
 import Comments from "./comments";
 import Blog from "./main/Blog";
+
+import { getSinlgeBlogApi } from "../../api/blogApi";
 
 const BlogWrapper = () => {
   const [blog, setBlog] = useState(null);
@@ -58,7 +59,7 @@ function useGetBlog(setBlog) {
         if (!checkInLocal) {
           dispatch(changeLoadingState(true));
         }
-        const res = await axios.get(`/api/specificBlog/${id}`);
+        const res = await getSinlgeBlogApi(id);
         setBlog(res.data);
         dispatch(changeLoadingState(false));
       } catch (error) {

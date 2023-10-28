@@ -1,21 +1,24 @@
 import jwt_decode from "jwt-decode";
-import axios from "axios";
+import { store } from "../app/store";
 import { login } from "../features/authSlice";
+import getAccessToken from "./getAccessToken";
 
 // to check we are usuing jwt-decode
 
-export const CheckTokenEx = async (token, dispatch) => {
+const CheckTokenEx = async (token) => {
   const decoded = jwt_decode(token);
 
-  // jwt expire o illayo endu check panra
-  // expire illatti return panra  ,, expire enda request ondu anuppura access token a edukka
-  if (decoded.exp >= Date.now() / 1000) return token;
+  // Check if the token will expire within the next 5 seconds
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp - currentTime < 5) {
+    // Token will expire soon, fetch a new one
+    const res = await getAccessToken();
+    store.dispatch(login(res.data));
+    return res.data.access_token;
+  }
 
-  const res = await axios.get("/api/user/refresh_token");
-
-  dispatch(login(res.data));
-
-  //   dispatch({ type: "AUTH", payload: res.data });
-
-  return res.data.access_token;
+  // Token is still valid, return it
+  return token;
 };
+
+export default CheckTokenEx;

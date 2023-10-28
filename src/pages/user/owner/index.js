@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -9,9 +8,9 @@ import {
 } from "../../../features/alertSlice";
 
 import { updateUserData } from "../../../features/authSlice";
-import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
+import { updateUserProfileApi } from "../../../api/userApi";
 
-const Owner = ({ user, access_token }) => {
+const Owner = ({ user }) => {
   const [username, setUserName] = useState(user.username);
   const [profession, setProfession] = useState(user.profession);
   const [oldPassword, setOldPassword] = useState(null);
@@ -42,15 +41,13 @@ const Owner = ({ user, access_token }) => {
     try {
       dispatch(changeLoadingState(true));
 
-      const token = await CheckTokenEx(access_token, dispatch);
-
-      await axios.put(
-        "/api/user/updateProfile",
-        { username, profession, oldPassword, newPassword, confirmPassword },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await updateUserProfileApi({
+        username,
+        profession,
+        oldPassword,
+        newPassword,
+        confirmPassword,
+      });
 
       dispatch(
         updateUserData({

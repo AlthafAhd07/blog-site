@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import axios from "axios";
 
 import "./App.css";
 
@@ -23,6 +22,7 @@ import { login, logout } from "./features/authSlice";
 import { selectAlert, showErrMsg } from "./features/alertSlice";
 
 import useDelayUnmount from "./hooks/useDelayUnmount";
+import getAccessToken from "./utils/getAccessToken";
 
 function App() {
   const { loading, toast } = useSelector(selectAlert);
@@ -62,7 +62,7 @@ export function useGetRefreshToken() {
 
     async function GetRefreshToken() {
       try {
-        const res = await axios.get("/api/user/refresh_token");
+        const res = await getAccessToken();
         dispatch(login(res.data));
       } catch (error) {
         localStorage.removeItem("logged");

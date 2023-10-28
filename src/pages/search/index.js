@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -10,6 +9,7 @@ import { showErrMsg } from "../../features/alertSlice";
 import NoResult from "./noResult";
 import BlogsContainer from "../../components/BlogsContainer";
 import SearchLoader from "./searchLoader";
+import { searchApi } from "../../api/globalApi";
 
 const Search = () => {
   const search = useSearchParams();
@@ -24,7 +24,7 @@ const Search = () => {
     const timeoutFun = setTimeout(async () => {
       try {
         setSearching(true);
-        const res = await axios.get(`/api/search?value=${searchValue}`);
+        const res = await searchApi(searchValue);
         setBlogs(res.data.msg);
         setSearching(false);
       } catch (error) {
@@ -39,7 +39,7 @@ const Search = () => {
       <h2>Search : {searchValue} </h2>
       {searching && <SearchLoader />}
       {blogs.length < 1 ? (
-        !searching && <NoResult />
+        !searching && <NoResult searchValue={searchValue} />
       ) : (
         <BlogsContainer Blogs={blogs} />
       )}

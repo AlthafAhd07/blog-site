@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,10 +12,10 @@ import {
 import { selectAuth } from "../../features/authSlice";
 import { selectBlogs, updateSingleBlog } from "../../features/blogSlice";
 
-import { CheckTokenEx } from "../../utils/checkTokenExpiration";
 import { uploadImg } from "../createBlog";
 
 import Blog from "../blog/main/Blog";
+import { editBlogApi, getSinlgeBlogApi } from "../../api/blogApi";
 
 const initalaBlogState = {
   title: "",
@@ -28,8 +27,6 @@ const initalaBlogState = {
 const EditBlog = () => {
   const [blog, setBlog] = useState(initalaBlogState);
   const [tempImg, setTempImg] = useState();
-
-  const { access_token } = useSelector(selectAuth);
 
   const { id } = useParams();
 
@@ -58,21 +55,11 @@ const EditBlog = () => {
         imageUrl = await uploadImg(tempImg);
       }
 
-      const token = await CheckTokenEx(access_token, dispatch);
-
-      await axios.put(
-        "/api/blog/update",
-        {
-          id,
-          ...blog,
-          thumbnail: imageUrl ? imageUrl : blog.thumbnail,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await editBlogApi({
+        id,
+        ...blog,
+        thumbnail: imageUrl ? imageUrl : blog.thumbnail,
+      });
 
       dispatch(
         updateSingleBlog({
@@ -168,7 +155,8 @@ function useGetBlog(id, setBlog) {
     }
     async function getSingleBlog() {
       try {
-        const res = await axios.get(`/api/specificBlog/${id}`);
+        const res = await getSinlgeBlogApi(id);
+
         if (res.data.author.userId !== user._id) {
           navigate("/");
           return;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import "./UserDashBoard.css";
 
@@ -13,6 +12,7 @@ import BlogsContainer from "../../components/BlogsContainer";
 
 import UserTop from "./userTop.js";
 import Visitor from "./visitor";
+import { getAllUserBlogsApi } from "../../api/blogApi";
 
 const UserDashboard = () => {
   // blogs related to this user id , it can be the current user or any other user
@@ -68,7 +68,7 @@ function useGetUserBlogs(id, user, setLoadingBlogs, setProfileBlogs) {
 
     async function getUserBlogs() {
       try {
-        const res = await axios.get(`/api/AllUserBlogs/${id}`);
+        const res = await getAllUserBlogsApi(id);
         setProfileBlogs(res.data);
 
         if (user?._id === id) {
@@ -82,5 +82,5 @@ function useGetUserBlogs(id, user, setLoadingBlogs, setProfileBlogs) {
       }
     }
     getUserBlogs();
-  }, [id, user._id, userBlogs]);
+  }, [id, user._id]);
 }

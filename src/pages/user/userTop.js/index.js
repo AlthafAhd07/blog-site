@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 
 import "./userTop.css";
 
@@ -17,10 +16,10 @@ import Owner from "../owner";
 import SinglePostSkeleton from "../../../components/skeleton/SinglePostSkeleton";
 import SingleBlogPost from "../../../components/BlogsContainer/SingleBlogPost";
 
-import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
+import { logoutApi } from "../../../api/authApi";
 
 const UserTop = ({ loadingBlogs, recentBlog }) => {
-  const { user, access_token } = useSelector(selectAuth);
+  const { user } = useSelector(selectAuth);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,13 +28,7 @@ const UserTop = ({ loadingBlogs, recentBlog }) => {
     try {
       dispatch(changeLoadingState(true));
 
-      const token = await CheckTokenEx(access_token, dispatch);
-
-      await axios.get("/api/user/logout", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      await logoutApi();
       navigate("/");
       dispatch(logout());
       dispatch(showSuccessMsg("Logged out.."));
@@ -48,7 +41,7 @@ const UserTop = ({ loadingBlogs, recentBlog }) => {
 
   return (
     <div className="user__top">
-      <Owner user={user} access_token={access_token} />
+      <Owner user={user} />
       <div className="user__recentPost">
         <button
           className="createPost__button"

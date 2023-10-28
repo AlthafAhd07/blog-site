@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +8,7 @@ import SingelComment from "./SingelComment";
 import { selectAuth } from "../../../features/authSlice";
 import { showErrMsg } from "../../../features/alertSlice";
 
-import { CheckTokenEx } from "../../../utils/checkTokenExpiration";
+import { createCommentApi } from "../../../api/commentApi";
 
 const Comments = ({ comments, blogId, setBlog }) => {
   const [newcomment, setNewComment] = useState("");
@@ -46,17 +45,7 @@ const Comments = ({ comments, blogId, setBlog }) => {
       }));
       setNewComment("");
 
-      const token = await CheckTokenEx(access_token, dispatch);
-
-      await axios.post(
-        "/api/blog/comment",
-        { blogId, comment: newcomment },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await createCommentApi({ blogId, comment: newcomment });
     } catch (error) {
       dispatch(showErrMsg(error.response.data.msg));
     }

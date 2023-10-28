@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 
 import "./createBlog.css";
 
@@ -15,7 +14,7 @@ import {
 } from "../../features/alertSlice";
 import { addNewBlog } from "../../features/blogSlice";
 
-import { CheckTokenEx } from "../../utils/checkTokenExpiration";
+import { createBlogApi } from "../../api/blogApi";
 
 const initalaBlogState = {
   title: "",
@@ -28,7 +27,7 @@ const CreateBlog = () => {
   const [blog, setBlog] = useState(initalaBlogState);
   const [tempImg, setTempImg] = useState("");
 
-  const { user, access_token } = useSelector(selectAuth);
+  const { user } = useSelector(selectAuth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,18 +53,10 @@ const CreateBlog = () => {
         return;
       }
 
-      const token = await CheckTokenEx(access_token, dispatch);
-
-      const res = await axios.post(
-        "/api/blog/create",
-        {
-          ...blog,
-          thumbnail: imageUrl,
-        },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      const res = createBlogApi({
+        ...blog,
+        thumbnail: imageUrl,
+      });
 
       dispatch(showSuccessMsg("Blog created Successfully!"));
       dispatch(changeLoadingState(false));
